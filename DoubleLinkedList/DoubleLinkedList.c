@@ -3,16 +3,17 @@
 #include "DoubleLinkedList.h"
 
 // O(1)
-int Initialize(DoubleLinkedList *doubleLinkedList)
+DoubleLinkedList* Initialize()
 {
-	if ((doubleLinkedList = (DoubleLinkedList *)malloc(sizeof(DoubleLinkedList))) == NULL)
-		return -1;
+	DoubleLinkedList *doubleLinkedList;
+	if ((doubleLinkedList = (DoubleLinkedList*)malloc(sizeof(DoubleLinkedList))) == NULL)
+		return NULL;
 
-	doubleLinkedList->size = 0;
 	doubleLinkedList->head = NULL;
 	doubleLinkedList->tail = NULL;
+	doubleLinkedList->size = 0;
 
-	return 0;
+	return doubleLinkedList;
 }
 
 // O(1)
@@ -24,16 +25,21 @@ int InsertBefore(DoubleLinkedList *doubleLinkedList, Node *item, const void *dat
 
 	if (item == NULL)
 	{
-		doubleLinkedList->head = node;
+		if (doubleLinkedList->head != NULL)
+			return -1;
+
+		doubleLinkedList->head = doubleLinkedList->tail = node;
 		node->next = node->previous = NULL;
 	}
 	else
 	{
 		node->previous = item->previous;
-		node->previous->next = node;
-
 		node->next = item;
+		item->previous->next = node;
 		item->previous = node;
+
+		if (node->previous == NULL)
+			doubleLinkedList->head = node;
 	}
 
 	node->data = (void *)data;
@@ -51,19 +57,20 @@ int InsertAfter(DoubleLinkedList *doubleLinkedList, Node *item, const void *data
 
 	if (item == NULL)
 	{
-		doubleLinkedList->head = node;
+		if (doubleLinkedList->tail != NULL)
+			return -1;
+
+		doubleLinkedList->head = doubleLinkedList->tail = node;
 		node->next = node->previous = NULL;
 	}
 	else
 	{
 		node->next = item->next;
-		node->next->previous = node;
-		printf("Error\n");
-
-		if (item == NULL)
-			printf("Error 1\n");
 		item->next = node;
 		node->previous = item;
+
+		if (node->next == NULL)
+			doubleLinkedList->tail = node;
 	}
 
 	node->data = (void *)data;
@@ -95,12 +102,12 @@ void ListItem(const DoubleLinkedList const *doubleLinkedList, void(*Print)(const
 }
 
 // O(n)
-Node* GetNode(const DoubleLinkedList const *doubleLinkedList, const void const *data)
+Node* GetNode(const DoubleLinkedList const *doubleLinkedList, const void const *data, int(Compare)(const Node const *node, const void const *data))
 {
 	Node *node = doubleLinkedList->head;
 	while (node != NULL)
 	{
-		if (node->data == data)
+		if (Compare(node, data) == 1)
 			return node;
 		node = node->next;
 	}

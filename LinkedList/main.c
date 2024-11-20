@@ -4,6 +4,7 @@
 
 int* CreateElement(int data);
 void Print(const LinkedList const *linkedList);
+int Compare(const Node const *node, const void const *data);
 void Delete(void *data);
 
 int main(void)
@@ -21,7 +22,7 @@ int main(void)
         InsertAfter(linkedList, NULL, (void *)value);
 
 	Node *node;
-	if((node = GetNode(linkedList, value)) == NULL)
+	if((node = GetNode(linkedList, value, Compare)) == NULL)
 		return -1;
 
 	value = CreateElement(2);
@@ -29,7 +30,7 @@ int main(void)
 		return -1;
         InsertAfter(linkedList, node, (void *)value);
 
-	if((node = GetNode(linkedList, value)) == NULL)
+	if((node = GetNode(linkedList, value, Compare)) == NULL)
 		return -1;
 
 	value = CreateElement(3);
@@ -81,6 +82,13 @@ void Print(const LinkedList const *linkedList)
         }
 
         printf("\n");
+}
+
+int Compare(const Node const *node, const void const *data)
+{
+	if (*(int*)data == *(int*)node->data)
+		return 1;
+	return 0;
 }
 
 void Delete(void *data)

@@ -77,12 +77,12 @@ void ListItem(const LinkedList const *linkedList, void (*Print)(const LinkedList
 }
 
 // O(n)
-Node* GetNode(const LinkedList *linkedList, const void const *data)
+Node* GetNode(const LinkedList *linkedList, const void const *data, int(Compare)(const Node const *node, const void const *data))
 {
 	Node *node = linkedList->head;
 	while (node != NULL)
 	{
-		if(node->data == data)
+		if (Compare(node, data) == 1)
 			return node;
 		node = node->next;
 	}
@@ -104,7 +104,7 @@ int Destroy(LinkedList *linkedList, void (*Delete)(void *data))
 	}
 
 	free(linkedList);
-	
+
 	return 0;
 }
 
