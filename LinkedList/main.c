@@ -9,7 +9,7 @@ void Delete(void *data);
 int main(void)
 {
 	LinkedList *linkedList;
-    if (Initialize(linkedList) == -1)
+    if ((linkedList = Initialize(linkedList)) == NULL)
 	{
 		printf("Failed to Initialize LinkedList");
 		return -1;

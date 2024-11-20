@@ -2,15 +2,16 @@
 #include "LinkedList.h"
 
 // O(1)
-int Initialize(LinkedList *linkedList)
+LinkedList* Initialize()
 {
+	LinkedList *linkedList;
 	if ((linkedList = (LinkedList*)malloc(sizeof(LinkedList))) == NULL)
-		return -1;
+		return NULL;
 
 	linkedList->head = NULL;
 	linkedList->size = 0;
 
-	return 0;
+	return linkedList;
 }
 
 // O(1)
@@ -33,6 +34,7 @@ int InsertAfter(LinkedList *linkedList, Node *item, const void *data)
         }
 
         linkedList->size++;
+
         return 0;
 }
 
@@ -102,6 +104,7 @@ int Destroy(LinkedList *linkedList, void (*Delete)(void *data))
 	}
 
 	free(linkedList);
+	
 	return 0;
 }
 

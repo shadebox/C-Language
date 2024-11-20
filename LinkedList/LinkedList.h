@@ -15,7 +15,7 @@ typedef struct LinkedList {
 } LinkedList;
 
 // Function Definitions
-int Initialize(LinkedList *linkedList);
+LinkedList* Initialize();
 int InsertAfter(LinkedList *linkedList, Node *item, const void *data);
 int RemoveAfter(LinkedList *linkedList, Node *item, void **data);
 int Size(const LinkedList const *linkedList);
