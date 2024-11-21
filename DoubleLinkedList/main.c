@@ -5,6 +5,7 @@
 int* CreateElement(int data);
 void Print(const DoubleLinkedList const *doubleLinkedList);
 int Compare(const Node const *node, const void const *data);
+void Delete(void *data);
 
 int main(void)
 {
@@ -37,8 +38,8 @@ int main(void)
 		return -1;
 	InsertBefore(doubleLinkedList, node, (void *)value);
 
-	int findValue = 3;
-	if ((node = GetNode(doubleLinkedList, &findValue, Compare)) == NULL)
+	int nodeValue = 3;
+	if ((node = GetNode(doubleLinkedList, &nodeValue, Compare)) == NULL)
 		return -1;
 	
 	value = CreateElement(4);
@@ -48,6 +49,39 @@ int main(void)
 
 	printf("DoubleLinkedList Size: %d\n", Size(doubleLinkedList));
     ListItem(doubleLinkedList, Print);
+
+	nodeValue = 3;
+	int *removed = NULL;
+	if ((node = GetNode(doubleLinkedList, &nodeValue, Compare)) == NULL)
+		return -1;
+	RemoveBefore(doubleLinkedList, node, (void*)&removed);
+	printf("Removed: %d\n", *removed);
+
+	nodeValue = 1;
+	removed = NULL;
+	if ((node = GetNode(doubleLinkedList, &nodeValue, Compare)) == NULL)
+		return -1;
+	RemoveAfter(doubleLinkedList, node, (void*)&removed);
+	printf("Removed: %d\n", *removed);
+
+	// removed = NULL;
+	// RemoveAfter(doubleLinkedList, NULL, (void*)&removed);
+	// printf("Removed: %d\n", *removed);
+
+	
+	// removed = NULL;
+	// RemoveBefore(doubleLinkedList, NULL, (void*)&removed);
+	// printf("Removed: %d\n", *removed);
+
+	printf("DoubleLinkedList Size: %d\n", Size(doubleLinkedList));
+    ListItem(doubleLinkedList, Print);
+
+	if (Destroy(doubleLinkedList, Delete) == -1)
+		return -1;
+	else
+		doubleLinkedList == NULL;
+
+	printf("DoubleLinkedList destroyed");
 
 	return 0;
 }
@@ -80,4 +114,10 @@ int Compare(const Node const *node, const void const *data)
 	if (*(int*)data == *(int*)node->data)
 		return 1;
 	return 0;
+}
+
+void Delete(void *data)
+{
+	printf("Deleting... %d\n", *(int *)data);
+	free(data);
 }

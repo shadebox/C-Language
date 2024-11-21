@@ -79,13 +79,67 @@ int InsertAfter(DoubleLinkedList *doubleLinkedList, Node *item, const void *data
 	return 0;
 }
 
+// O(1)
 int RemoveAfter(DoubleLinkedList *doubleLinkedList, Node *item, void **data)
 {
+	if (Size(doubleLinkedList) == 0)
+		return -1;
+
+	Node *node;
+	if (item == NULL)
+	{
+		node = doubleLinkedList->tail;
+		doubleLinkedList->tail = node->previous;
+
+		if (doubleLinkedList->tail != NULL)
+			doubleLinkedList->tail->next = NULL;
+	}
+	else
+	{
+		node = item->next;
+		item->next = node->next;
+		item->next->previous = item;
+
+		if (node->next == NULL)
+			doubleLinkedList->tail = item;
+	}
+
+	doubleLinkedList->size--;
+	*data = node->data;
+	free(node);
+
 	return 0;
 }
 
+// O(1)
 int RemoveBefore(DoubleLinkedList *doubleLinkedList, Node *item, void **data)
 {
+	if (Size(doubleLinkedList) == 0)
+		return - 1;
+
+	Node *node;
+	if (item == NULL)
+	{
+		node = doubleLinkedList->head;
+		doubleLinkedList->head = node->next;
+
+		if (doubleLinkedList->head != NULL)
+			doubleLinkedList->head->previous = NULL;
+	}
+	else
+	{
+		node = item->previous;
+		item->previous = node->previous;
+		node->previous->next = item;
+
+		if (node->previous == NULL)
+			doubleLinkedList->head = item;
+	}
+
+	doubleLinkedList->size--;
+	*data = node->data;
+	free(node);
+
 	return 0;
 }
 
@@ -115,7 +169,20 @@ Node* GetNode(const DoubleLinkedList const *doubleLinkedList, const void const *
 	return NULL;
 }
 
-int Destroy(DoubleLinkedList *doubleLinkedList, int(*Delete)(void *data))
+// O(n)
+int Destroy(DoubleLinkedList *doubleLinkedList, void(*Delete)(void *data))
 {
+	void *removed;
+	while (Size(doubleLinkedList) > 0)
+	{
+		if ((removed = malloc(sizeof(void))) == NULL)
+			return -1;
+
+		if (RemoveAfter(doubleLinkedList, NULL, &removed) == 0)
+			Delete(removed);
+	}
+
+	free(doubleLinkedList);
+
 	return 0;
 }

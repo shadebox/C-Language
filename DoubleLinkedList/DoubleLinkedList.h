@@ -25,6 +25,6 @@ int RemoveBefore(DoubleLinkedList *doubleLinkedList, Node *item, void **data);
 int Size(const DoubleLinkedList const *doubleLinkedList);
 void ListItem(const DoubleLinkedList const *doubleLinkedList, void(*Print)(const DoubleLinkedList const *doubleLinkedList));
 Node* GetNode(const DoubleLinkedList const *doubleLinkedList, const void const *data, int(Compare)(const Node const *node, const void const *data));
-int Destroy(DoubleLinkedList *doubleLinkedList, int(*Delete)(void *data));
+int Destroy(DoubleLinkedList *doubleLinkedList, void(*Delete)(void *data));
 
 #endif
