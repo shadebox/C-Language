@@ -75,7 +75,7 @@ void ListItem(const Queue* const queue, void(*Print)(const Queue* const queue))
     Print(queue);
 }
 
-int Destroy(Queue* const queue, void(Delete)(void *data))
+int Destroy(Queue* const queue, void(*Delete)(void *data))
 {
     void *remove = NULL;
     while (Size(queue) > 0)
