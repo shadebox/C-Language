@@ -15,7 +15,7 @@ LinkedList* Initialize()
 }
 
 // O(1)
-int InsertAfter(LinkedList *linkedList, Node *item, const void *data)
+int InsertAfter(LinkedList* const linkedList, Node* const item, const void* const data)
 {
 	Node *node;
         if ((node = malloc(sizeof(Node))) == NULL)
@@ -39,7 +39,7 @@ int InsertAfter(LinkedList *linkedList, Node *item, const void *data)
 }
 
 // O(1)
-int RemoveAfter(LinkedList *linkedList, Node *item, void **data)
+int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
 {
 	if (Size(linkedList) == 0)
 		return -1;
@@ -65,19 +65,19 @@ int RemoveAfter(LinkedList *linkedList, Node *item, void **data)
 }
 
 // O(1)
-int Size(const LinkedList const *linkedList)
+int Size(const LinkedList* const linkedList)
 {
 	return linkedList->size;
 }
 
 // O(Print())
-void ListItem(const LinkedList const *linkedList, void (*Print)(const LinkedList const *linkedList))
+void ListItem(const LinkedList* const linkedList, void (*Print)(const LinkedList* const linkedList))
 {
 	Print(linkedList);
 }
 
 // O(n)
-Node* GetNode(const LinkedList *linkedList, const void const *data, int(Compare)(const Node const *node, const void const *data))
+Node* GetNode(const LinkedList* const linkedList, const void* const data, int Compare(const Node* const node, const void* const data))
 {
 	Node *node = linkedList->head;
 	while (node != NULL)
@@ -91,7 +91,7 @@ Node* GetNode(const LinkedList *linkedList, const void const *data, int(Compare)
 }
 
 // O(n)
-int Destroy(LinkedList *linkedList, void (*Delete)(void *data))
+int Destroy(LinkedList* const linkedList, void (*Delete)(void *data))
 {
 	void *remove;
 	while (Size(linkedList) > 0)

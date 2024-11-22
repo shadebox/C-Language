@@ -17,7 +17,7 @@ DoubleLinkedList* Initialize()
 }
 
 // O(1)
-int InsertBefore(DoubleLinkedList *doubleLinkedList, Node *item, const void *data)
+int InsertBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data)
 {
 	Node *node;
 	if ((node = (Node *)malloc(sizeof(Node))) == NULL)
@@ -49,7 +49,7 @@ int InsertBefore(DoubleLinkedList *doubleLinkedList, Node *item, const void *dat
 }
 
 // O(1)
-int InsertAfter(DoubleLinkedList *doubleLinkedList, Node *item, const void *data)
+int InsertAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data)
 {
 	Node *node;
 	if ((node = (Node *)malloc(sizeof(Node))) == NULL)
@@ -80,7 +80,7 @@ int InsertAfter(DoubleLinkedList *doubleLinkedList, Node *item, const void *data
 }
 
 // O(1)
-int RemoveAfter(DoubleLinkedList *doubleLinkedList, Node *item, void **data)
+int RemoveAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data)
 {
 	if (Size(doubleLinkedList) == 0)
 		return -1;
@@ -112,7 +112,7 @@ int RemoveAfter(DoubleLinkedList *doubleLinkedList, Node *item, void **data)
 }
 
 // O(1)
-int RemoveBefore(DoubleLinkedList *doubleLinkedList, Node *item, void **data)
+int RemoveBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data)
 {
 	if (Size(doubleLinkedList) == 0)
 		return - 1;
@@ -144,19 +144,19 @@ int RemoveBefore(DoubleLinkedList *doubleLinkedList, Node *item, void **data)
 }
 
 // O(1)
-int Size(const DoubleLinkedList const *doubleLinkedList)
+int Size(const DoubleLinkedList* const doubleLinkedList)
 {
 	return doubleLinkedList->size;
 }
 
 // O(Print())
-void ListItem(const DoubleLinkedList const *doubleLinkedList, void(*Print)(const DoubleLinkedList const *doubleLinkedList))
+void ListItem(const DoubleLinkedList* const doubleLinkedList, void(*Print)(const DoubleLinkedList* const doubleLinkedList))
 {
 	Print(doubleLinkedList);
 }
 
 // O(n)
-Node* GetNode(const DoubleLinkedList const *doubleLinkedList, const void const *data, int(Compare)(const Node const *node, const void const *data))
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(Compare)(const Node* const node, const void* const data))
 {
 	Node *node = doubleLinkedList->head;
 	while (node != NULL)
@@ -170,7 +170,7 @@ Node* GetNode(const DoubleLinkedList const *doubleLinkedList, const void const *
 }
 
 // O(n)
-int Destroy(DoubleLinkedList *doubleLinkedList, void(*Delete)(void *data))
+int Destroy(DoubleLinkedList* const doubleLinkedList, void(*Delete)(void *data))
 {
 	void *removed;
 	while (Size(doubleLinkedList) > 0)

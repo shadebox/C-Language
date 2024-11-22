@@ -3,8 +3,8 @@
 #include "DoubleLinkedList.h"
 
 int* CreateElement(int data);
-void Print(const DoubleLinkedList const *doubleLinkedList);
-int Compare(const Node const *node, const void const *data);
+void Print(const DoubleLinkedList* const doubleLinkedList);
+int Compare(const Node* const node, const void* const data);
 void Delete(void *data);
 
 int main(void)
@@ -96,7 +96,7 @@ int* CreateElement(int data)
 	return value;
 }
 
-void Print(const DoubleLinkedList const *doubleLinkedList)
+void Print(const DoubleLinkedList* const doubleLinkedList)
 {
 	printf("List: ");
 	Node *node = doubleLinkedList->head;
@@ -109,7 +109,7 @@ void Print(const DoubleLinkedList const *doubleLinkedList)
 	printf("\n");
 }
 
-int Compare(const Node const *node, const void const *data)
+int Compare(const Node* const node, const void* const data)
 {
 	if (*(int*)data == *(int*)node->data)
 		return 1;

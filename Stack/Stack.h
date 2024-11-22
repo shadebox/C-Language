@@ -14,11 +14,11 @@ typedef struct Stack {
 
 // Function Definition
 Stack* Initialize();
-int Push(Stack *stack, const void *data);
-int Pop(Stack *stack, void **data);
-int Peek(const Stack const *stack, void **data);
-int Size(const Stack const *stack);
-void ListItem(const Stack const *stack, void (*Print)(const Stack const *stack));
-int Destroy(Stack *stack, void (*Delete)(void *data));
+int Push(Stack* const stack, const void* const data);
+int Pop(Stack* const stack, const void **data);
+int Peek(const Stack* const stack, const void **data);
+int Size(const Stack* const stack);
+void ListItem(const Stack* const stack, void (*Print)(const Stack* const stack));
+int Destroy(Stack* const stack, void (*Delete)(void *data));
 
 #endif

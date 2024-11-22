@@ -15,7 +15,7 @@ Stack* Initialize()
 }
 
 // O(1)
-int Push(Stack *stack, const void *data)
+int Push(Stack* const stack, const void* const data)
 {
     Node *node;
     if ((node = (Node *)malloc(sizeof(Node))) == NULL)
@@ -39,7 +39,7 @@ int Push(Stack *stack, const void *data)
 }
 
 // O(1)
-int Pop(Stack *stack, void **data)
+int Pop(Stack* const stack, const void **data)
 {
     if (Size(stack) == 0)
         return -1;
@@ -55,7 +55,7 @@ int Pop(Stack *stack, void **data)
 }
 
 // O(1)
-int Peek(const Stack const *stack, void **data)
+int Peek(const Stack* const stack, const void **data)
 {
     if (Size(stack) == 0)
         return -1;
@@ -65,18 +65,18 @@ int Peek(const Stack const *stack, void **data)
 }
 
 // O(1)
-int Size(const Stack const *stack)
+int Size(const Stack* const stack)
 {
     return stack->size;
 }
 
 // O(Print())
-void ListItem(const Stack const *stack, void (*Print)(const Stack const *stack))
+void ListItem(const Stack* const stack, void (*Print)(const Stack* const stack))
 {
     Print(stack);
 }
 
-int Destroy(Stack *stack, void (*Delete)(void *data))
+int Destroy(Stack* const stack, void (*Delete)(void *data))
 {
     void *remove;
     while(Size(stack) > 0)

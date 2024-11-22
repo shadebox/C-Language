@@ -3,7 +3,7 @@
 #include "Stack.h"
 
 int* CreateElement(int data);
-void Print(const Stack const *stack);
+void Print(const Stack* const stack);
 void Delete(void *data);
 
 int main(void)
@@ -59,7 +59,7 @@ int* CreateElement(int data)
     return value;
 }
 
-void Print(const Stack const *stack)
+void Print(const Stack* const stack)
 {
     printf("List: ");
     Node* member = stack->top;

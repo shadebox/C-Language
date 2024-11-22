@@ -3,8 +3,8 @@
 #include "LinkedList.h"
 
 int* CreateElement(int data);
-void Print(const LinkedList const *linkedList);
-int Compare(const Node const *node, const void const *data);
+void Print(const LinkedList* const linkedList);
+int Compare(const Node* const node, const void* const data);
 void Delete(void *data);
 
 int main(void)
@@ -72,7 +72,7 @@ int* CreateElement(int data)
 	return value;
 }
 
-void Print(const LinkedList const *linkedList)
+void Print(const LinkedList* const linkedList)
 {
 	Node *member = linkedList->head;
 	printf("List: ");
@@ -85,7 +85,7 @@ void Print(const LinkedList const *linkedList)
 	printf("\n");
 }
 
-int Compare(const Node const *node, const void const *data)
+int Compare(const Node* const node, const void* const data)
 {
 	if (*(int*)data == *(int*)node->data)
 		return 1;
