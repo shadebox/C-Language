@@ -67,6 +67,7 @@ int* CreateElement(int data)
 	int *value = NULL;
 	if((value = (int *)malloc(sizeof(int))) == NULL)
 		return NULL;
+		
 	*value = data;
 	return value;
 }
@@ -75,13 +76,13 @@ void Print(const LinkedList const *linkedList)
 {
 	Node *member = linkedList->head;
 	printf("List: ");
-        while (member != NULL)
-        {
-                printf("%d ", *(int*) member->data);
-                member = member->next;
-        }
+	while (member != NULL)
+	{
+			printf("%d ", *(int*) member->data);
+			member = member->next;
+	}
 
-        printf("\n");
+	printf("\n");
 }
 
 int Compare(const Node const *node, const void const *data)
