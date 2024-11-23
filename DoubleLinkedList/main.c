@@ -10,7 +10,7 @@ void Delete(void *data);
 int main(void)
 {
 	DoubleLinkedList *doubleLinkedList;
-	if ((doubleLinkedList = Initialize(doubleLinkedList)) == NULL)
+	if ((doubleLinkedList = Initialize()) == NULL)
     {
         printf("Failed to Initialize DoubleLinkedList");
         return -1;
