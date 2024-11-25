@@ -2,16 +2,15 @@
 #include "Set.h"
 
 // O(1)
-Set* Initialize()
+int Initialize(Set **set)
 {
-    Set *set = NULL;
-    if ((set = (Set*)malloc(sizeof(Set))) == NULL)
-        return NULL;
+    if ((*set = (Set*)malloc(sizeof(Set))) == NULL)
+        return -1;
 
-    set->head = set->tail = NULL;
-    set->size = 0;
+    (*set)->head = (*set)->tail = NULL;
+    (*set)->size = 0;
 
-    return set;
+    return 1;
 }
 
 // O(n)
@@ -77,10 +76,11 @@ int Remove(Set* const set, const void* const data, int(*Compare)(const Node* con
                 previous->next = member->next;
             else
                 set->head = member->next;
-
-            set->size--;
             Delete(member->data);
+            
+            set->size--;
             free(member);
+
             return 1;
         }
 
@@ -92,12 +92,8 @@ int Remove(Set* const set, const void* const data, int(*Compare)(const Node* con
 }
 
 // O(n*m)
-Set* Union(const Set* const setA, const Set* const setB, int(*Compare)(const Node* const node, const void* const data))
+Set* Union(const Set* const setA, const Set* const setB, Set *set, int(*Compare)(const Node* const node, const void* const data))
 {
-    Set *set = NULL;
-    if ((set = Initialize()) == NULL)
-        return NULL;
-
     Node *member = setA->head;
     while (member != NULL)
     {
@@ -117,11 +113,10 @@ Set* Union(const Set* const setA, const Set* const setB, int(*Compare)(const Nod
 }
 
 // O(n*m)
-Set* Intersection(const Set* const setA, const Set* const setB, int(*Compare)(const Node* const node, const void* const data))
+Set* Intersection(const Set* const setA, const Set* const setB, Set *set, int(*Compare)(const Node* const node, const void* const data))
 {
-    Set *set = NULL;
-    if ((set = Initialize()) == NULL)
-        return NULL;
+    // if (Initialize(set) == NULL)
+    //     return NULL;
 
     Node *member = setA->head;
     while (member != NULL)
@@ -135,11 +130,10 @@ Set* Intersection(const Set* const setA, const Set* const setB, int(*Compare)(co
 }
 
 // O(n*m)
-Set* Difference(const Set* const setA, const Set* const setB, int(*Compare)(const Node* const node, const void* const data))
+Set* Difference(const Set* const setA, const Set* const setB, Set *set, int(*Compare)(const Node* const node, const void* const data))
 {
-    Set *set = NULL;
-    if ((set = Initialize()) == NULL)
-        return NULL;
+    // if (Initialize(set) == NULL)
+    //     return NULL;
 
     Node *member = setA->head;
     while (member != NULL)
@@ -212,13 +206,4 @@ int Destroy(Set* const set, int(*Compare)(const Node* const node, const void* co
     free(set);
 
     return 0;
-}
-
-Set* Cover(Set* const member, Set* const subsets)
-{
-    Set* covering;
-    if ((covering = Initialize()) == NULL)
-        return NULL;
-
-    return covering;
 }
