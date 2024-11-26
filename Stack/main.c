@@ -4,13 +4,13 @@
 
 int* CreateElement(int data);
 void Print(const Stack* const stack);
+void DeleteNode(Node *data);
 void Delete(void *data);
 
 int main(void)
 {
     Stack *stack;
-
-    if ((stack = Initialize()) == NULL)
+    if (Initialize(&stack, DeleteNode) == -1)
         return -1;
 
     int *value = NULL;
@@ -31,14 +31,14 @@ int main(void)
     printf("Peek: %d\n", *value);
 
     printf("Stack size: %d\n", Size(stack));
-    ListItem(stack, Print);
+    Print(stack);
 
     if (Pop(stack, (void *)&value) == -1)
         return -1;
     printf("Pop: %d\n", *value);
 
     printf("Stack size: %d\n", Size(stack));
-    ListItem(stack, Print);
+    Print(stack);
 
     if (Destroy(stack, Delete) == -1)
         return -1;
@@ -69,6 +69,11 @@ void Print(const Stack* const stack)
         member = member->next;
     }
     printf("\n");
+}
+
+void DeleteNode(Node *data)
+{
+    free(data);
 }
 
 void Delete(void *data)

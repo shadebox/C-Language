@@ -10,15 +10,16 @@ typedef struct Node {
 typedef struct Stack {
     Node *top;
     int size;
+
+    void(*Delete)(Node *node);
 } Stack;
 
 // Function Definition
-Stack* Initialize();
+int Initialize(Stack **stack, void(*Delete)(Node *node));
 int Push(Stack* const stack, const void* const data);
 int Pop(Stack* const stack, const void **data);
 int Peek(const Stack* const stack, const void **data);
 int Size(const Stack* const stack);
-void ListItem(const Stack* const stack, void (*Print)(const Stack* const stack));
 int Destroy(Stack* const stack, void (*Delete)(void *data));
 
 #endif

@@ -2,16 +2,16 @@
 #include "Stack.h"
 
 // O(1)
-Stack* Initialize()
+int Initialize(Stack **stack, void(*Delete)(Node *node))
 {
-    Stack *stack;
-    if ((stack = (Stack *)malloc(sizeof(Stack))) == NULL)
-        return NULL;
+    if ((*stack = (Stack *)malloc(sizeof(Stack))) == NULL)
+        return -1;
 
-    stack->size = 0;
-    stack->top = NULL;
+    (*stack)->size = 0;
+    (*stack)->top = NULL;
+    (*stack)->Delete = Delete;
 
-    return stack;
+    return 1;
 }
 
 // O(1)
@@ -49,8 +49,8 @@ int Pop(Stack* const stack, const void **data)
 
     stack->top = member->next;
     stack->size--;
+    stack->Delete(member);
 
-    free(member);
     return 0;
 }
 
@@ -68,12 +68,6 @@ int Peek(const Stack* const stack, const void **data)
 int Size(const Stack* const stack)
 {
     return stack->size;
-}
-
-// O(Print())
-void ListItem(const Stack* const stack, void (*Print)(const Stack* const stack))
-{
-    Print(stack);
 }
 
 int Destroy(Stack* const stack, void (*Delete)(void *data))
