@@ -2,13 +2,14 @@
 #include "LinkedList.h"
 
 // O(1)
-int Initialize(LinkedList **linkedList)
+int Initialize(LinkedList **linkedList, void(*Delete)(Node *node))
 {
 	if ((*linkedList = (LinkedList*)malloc(sizeof(LinkedList))) == NULL)
 		return -1;
 
 	(*linkedList)->head = NULL;
 	(*linkedList)->size = 0;
+	(*linkedList)->Delete = Delete;
 
 	return 1;
 }
@@ -37,7 +38,7 @@ int InsertAfter(LinkedList* const linkedList, Node* const item, const void* cons
 }
 
 // O(1)
-int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data, void (*Delete)(void *data))
+int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
 {
 	if (Size(linkedList) == 0)
 		return -1;
@@ -55,9 +56,9 @@ int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data, voi
 			item->next = node->next;
 	}
 
-	linkedList->size--;
 	*data = node->data;
-	Delete(node);
+	linkedList->size--;
+	linkedList->Delete(node);
 
 	return 0;
 }
@@ -68,14 +69,14 @@ int Size(const LinkedList* const linkedList)
 	return linkedList->size;
 }
 
-// O(Print())
-void ListItem(const LinkedList* const linkedList, void (*Print)(const LinkedList* const linkedList))
-{
-	Print(linkedList);
-}
+// // O(Print())
+// void ListItem(const LinkedList* const linkedList, void (*Print)(const LinkedList* const linkedList))
+// {
+// 	Print(linkedList);
+// }
 
 // O(n)
-Node* GetNode(const LinkedList* const linkedList, const void* const data, int Compare(const Node* const node, const void* const data))
+Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const node, const void* const data))
 {
 	Node *node = linkedList->head;
 	while (node != NULL)
@@ -89,7 +90,7 @@ Node* GetNode(const LinkedList* const linkedList, const void* const data, int Co
 }
 
 // O(n)
-int Destroy(LinkedList* const linkedList, void (*Delete)(void *data))
+int Destroy(LinkedList* const linkedList, void(*Delete)(void *data))
 {
 	void *remove;
 	while (Size(linkedList) > 0)
@@ -97,7 +98,7 @@ int Destroy(LinkedList* const linkedList, void (*Delete)(void *data))
 		if ((remove = malloc(sizeof(void))) == NULL)
 			return -1;
 
-		if (RemoveAfter(linkedList, NULL, (void*)&remove, Delete) == 0)
+		if (RemoveAfter(linkedList, NULL, (void*)&remove) == 0)
 			Delete(remove);
 	}
 
