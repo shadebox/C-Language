@@ -2,15 +2,16 @@
 #include "Queue.h"
 
 // O(1)
-Queue* Initialize()
+int Initialize(Queue **queue, void(*Delete)(Node *data))
 {
-    Queue* queue = NULL;
-    if ((queue = (Queue *)malloc(sizeof(Queue))) == NULL)
-        return NULL;
+    if ((*queue = (Queue *)malloc(sizeof(Queue))) == NULL)
+        return -1;
 
-    queue->size = 0;
-    queue->head = queue-> tail = NULL;
-    return queue;
+    (*queue)->size = 0;
+    (*queue)->head = (*queue)-> tail = NULL;
+    (*queue)->Delete = Delete;
+
+    return 1;
 }
 
 // O(1)
@@ -58,8 +59,8 @@ int Dequeue(Queue* const queue, const void **data)
 
     queue->head = member->next;
     queue->size--;
+    queue->Delete(member);
 
-    free(member);
     return 0;
 }
 
@@ -67,12 +68,6 @@ int Dequeue(Queue* const queue, const void **data)
 int Size(const Queue* const queue)
 {
     return queue->size;
-}
-
-// O(Print())
-void ListItem(const Queue* const queue, void(*Print)(const Queue* const queue))
-{
-    Print(queue);
 }
 
 int Destroy(Queue* const queue, void(*Delete)(void *data))

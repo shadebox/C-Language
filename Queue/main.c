@@ -4,13 +4,14 @@
 
 int* CreateElement(int data);
 void Print(const Queue* const queue);
+void DeleteNode(Node *data);
 void Delete(void *data);
 
 int main(void)
 {
     Queue* queue;
 
-    if ((queue = Initialize()) == NULL)
+    if (Initialize(&queue, DeleteNode) == -1)
         return -1;
 
     int *value = NULL;
@@ -36,20 +37,19 @@ int main(void)
         return -1;
     Enqueue(queue, value);
     
-    ListItem(queue, Print);
+    Print(queue);
 
     if (Dequeue(queue, (void *)&value) == -1)
         return -1;
     printf("Dequeue: %d\n", *value);
 
     printf("Queue size: %d\n", Size(queue));
-    ListItem(queue, Print);
+    Print(queue);
 
     if (Destroy(queue, Delete) == -1)
         return -1;
     else
         queue = NULL;
-
 	printf("Stack destroyed");
 
     return 0;
@@ -75,6 +75,11 @@ void Print(const Queue* const queue)
         member = member->next;
     }
     printf("\n");
+}
+
+void DeleteNode(Node *data)
+{
+    free(data);
 }
 
 void Delete(void *data)
