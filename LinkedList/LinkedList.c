@@ -2,16 +2,15 @@
 #include "LinkedList.h"
 
 // O(1)
-LinkedList* Initialize()
+int Initialize(LinkedList **linkedList)
 {
-	LinkedList *linkedList;
-	if ((linkedList = (LinkedList*)malloc(sizeof(LinkedList))) == NULL)
-		return NULL;
+	if ((*linkedList = (LinkedList*)malloc(sizeof(LinkedList))) == NULL)
+		return -1;
 
-	linkedList->head = NULL;
-	linkedList->size = 0;
+	(*linkedList)->head = NULL;
+	(*linkedList)->size = 0;
 
-	return linkedList;
+	return 1;
 }
 
 // O(1)
@@ -19,27 +18,26 @@ int InsertAfter(LinkedList* const linkedList, Node* const item, const void* cons
 {
 	Node *node;
         if ((node = malloc(sizeof(Node))) == NULL)
-                return -1;
+            return -1;
 
         node->data = (void*)data;
         if (item == NULL)
         {
-                linkedList->head = node;
+            linkedList->head = node;
         	node->next = NULL;
         }
         else
         {
-                node->next = item->next;
-                item->next = node;
+            node->next = item->next;
+            item->next = node;
         }
 
         linkedList->size++;
-
         return 0;
 }
 
 // O(1)
-int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
+int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data, void (*Delete)(void *data))
 {
 	if (Size(linkedList) == 0)
 		return -1;
@@ -59,7 +57,7 @@ int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
 
 	linkedList->size--;
 	*data = node->data;
-	free(node);
+	Delete(node);
 
 	return 0;
 }
@@ -99,12 +97,11 @@ int Destroy(LinkedList* const linkedList, void (*Delete)(void *data))
 		if ((remove = malloc(sizeof(void))) == NULL)
 			return -1;
 
-		if (RemoveAfter(linkedList, NULL, (void*)&remove) == 0)
+		if (RemoveAfter(linkedList, NULL, (void*)&remove, Delete) == 0)
 			Delete(remove);
 	}
 
 	free(linkedList);
-
 	return 0;
 }
 
