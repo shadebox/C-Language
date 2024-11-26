@@ -5,16 +5,14 @@
 int* CreateElement(int data);
 void Print(const DoubleLinkedList* const doubleLinkedList);
 int Compare(const Node* const node, const void* const data);
+void DeleteNode(Node *data);
 void Delete(void *data);
 
 int main(void)
 {
 	DoubleLinkedList *doubleLinkedList;
-	if ((doubleLinkedList = Initialize()) == NULL)
-    {
-        printf("Failed to Initialize DoubleLinkedList");
+	if (Initialize(&doubleLinkedList, DeleteNode) == -1)
         return -1;
-    }
 
 	int *value = CreateElement(1);
 	if (value == NULL)
@@ -48,7 +46,7 @@ int main(void)
 	InsertAfter(doubleLinkedList, node, (void *)value);
 
 	printf("DoubleLinkedList Size: %d\n", Size(doubleLinkedList));
-    ListItem(doubleLinkedList, Print);
+    Print(doubleLinkedList);
 
 	nodeValue = 3;
 	int *removed = NULL;
@@ -71,10 +69,10 @@ int main(void)
 	
 	// removed = NULL;
 	// RemoveBefore(doubleLinkedList, NULL, (void*)&removed);
-	// printf("Removed: %d\n", *removed);
+	// printf("Removed: %d\n", *removed);*/
 
 	printf("DoubleLinkedList Size: %d\n", Size(doubleLinkedList));
-    ListItem(doubleLinkedList, Print);
+    Print(doubleLinkedList);
 
 	if (Destroy(doubleLinkedList, Delete) == -1)
 		return -1;
@@ -114,6 +112,11 @@ int Compare(const Node* const node, const void* const data)
 	if (*(int*)data == *(int*)node->data)
 		return 1;
 	return 0;
+}
+
+void DeleteNode(Node *data)
+{
+	free(data);
 }
 
 void Delete(void *data)

@@ -3,17 +3,17 @@
 #include "DoubleLinkedList.h"
 
 // O(1)
-DoubleLinkedList* Initialize()
+int Initialize(DoubleLinkedList **doubleLinkedList, void(*Delete)(Node *data))
 {
-	DoubleLinkedList *doubleLinkedList;
-	if ((doubleLinkedList = (DoubleLinkedList*)malloc(sizeof(DoubleLinkedList))) == NULL)
-		return NULL;
+	if ((*doubleLinkedList = (DoubleLinkedList*)malloc(sizeof(DoubleLinkedList))) == NULL)
+		return -1;
 
-	doubleLinkedList->head = NULL;
-	doubleLinkedList->tail = NULL;
-	doubleLinkedList->size = 0;
+	(*doubleLinkedList)->head = NULL;
+	(*doubleLinkedList)->tail = NULL;
+	(*doubleLinkedList)->size = 0;
+	(*doubleLinkedList)->Delete = Delete;
 
-	return doubleLinkedList;
+	return 1;
 }
 
 // O(1)
@@ -104,9 +104,9 @@ int RemoveAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, void
 			doubleLinkedList->tail = item;
 	}
 
-	doubleLinkedList->size--;
 	*data = node->data;
-	free(node);
+	doubleLinkedList->size--;
+	doubleLinkedList->Delete(node);
 
 	return 0;
 }
@@ -136,9 +136,9 @@ int RemoveBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, voi
 			doubleLinkedList->head = item;
 	}
 
-	doubleLinkedList->size--;
 	*data = node->data;
-	free(node);
+	doubleLinkedList->size--;
+	doubleLinkedList->Delete(node);
 
 	return 0;
 }
@@ -149,14 +149,8 @@ int Size(const DoubleLinkedList* const doubleLinkedList)
 	return doubleLinkedList->size;
 }
 
-// O(Print())
-void ListItem(const DoubleLinkedList* const doubleLinkedList, void(*Print)(const DoubleLinkedList* const doubleLinkedList))
-{
-	Print(doubleLinkedList);
-}
-
 // O(n)
-Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(Compare)(const Node* const node, const void* const data))
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(*Compare)(const Node* const node, const void* const data))
 {
 	Node *node = doubleLinkedList->head;
 	while (node != NULL)
