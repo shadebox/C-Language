@@ -69,12 +69,6 @@ int Size(const LinkedList* const linkedList)
 	return linkedList->size;
 }
 
-// // O(Print())
-// void ListItem(const LinkedList* const linkedList, void (*Print)(const LinkedList* const linkedList))
-// {
-// 	Print(linkedList);
-// }
-
 // O(n)
 Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const node, const void* const data))
 {
