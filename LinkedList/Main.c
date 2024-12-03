@@ -30,8 +30,7 @@ int main(void)
 
 	if (InsertAfter(linkedList, member, (void*)value) == false)
 		return -1;
-	member = NULL;
-	
+
 	value = CreateElement(3);
 	if(value == NULL)
 		return -1;
@@ -41,9 +40,6 @@ int main(void)
 
 	Print(linkedList);
 
-	if ((member = GetNode(linkedList, value, Compare)) == NULL)
-		return -1;
-
 	if ((value = (int *)malloc(sizeof(int))) == NULL)
 		return -1;
 	
@@ -51,6 +47,8 @@ int main(void)
 		printf("Failed to remove member\n");
 	else
 		printf("Value removed %d\n", *value);
+
+	Print(linkedList);
 
 	if (Destroy(&linkedList) == false)
 		return -1;

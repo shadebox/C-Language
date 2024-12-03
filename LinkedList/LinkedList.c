@@ -153,7 +153,7 @@ bool RemoveAtEnd(LinkedList* const linkedList, void **data)
 	return true;
 }
 
-// O(n)
+// O(1)
 bool RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
 {
 	if (Size(linkedList) == 0)
@@ -169,22 +169,15 @@ bool RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
 		*data = member->data;
 		linkedList->head = member->next;
 	}
-	else if (item->next != NULL)
+	else if (item->next == NULL)
+	{
+		return false;
+	}
+	else
 	{
 		member = item->next;
 		item->next = member->next;
 		*data = member->data;
-	}
-	else // Last node
-	{
-		while (member->next->next != NULL)
-			member = member->next;
-
-		member = item->next;
-		*data = member->data;
-
-		if (member != NULL)
-			item->next = member->next;
 	}
 
 	linkedList->size--;
