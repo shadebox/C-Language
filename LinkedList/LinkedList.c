@@ -1,66 +1,196 @@
 #include <stdlib.h>
+#include <errno.h>
+#include <stdbool.h>
 #include "LinkedList.h"
 
 // O(1)
-int Initialize(LinkedList **linkedList, void(*Delete)(Node *node))
+bool Initialize(LinkedList **linkedList, void(*Delete)(void *data))
 {
 	if ((*linkedList = (LinkedList*)malloc(sizeof(LinkedList))) == NULL)
-		return -1;
+	{
+		perror("Error message");
+		return false;
+	}
 
 	(*linkedList)->head = NULL;
 	(*linkedList)->size = 0;
 	(*linkedList)->Delete = Delete;
 
-	return 1;
+	return true;
 }
 
 // O(1)
-int InsertAfter(LinkedList* const linkedList, Node* const item, const void* const data)
+bool InsertAtFront(LinkedList* const linkedList, const void* const data)
 {
-	Node *node;
-        if ((node = malloc(sizeof(Node))) == NULL)
-            return -1;
-
-        node->data = (void*)data;
-        if (item == NULL)
-        {
-            linkedList->head = node;
-        	node->next = NULL;
-        }
-        else
-        {
-            node->next = item->next;
-            item->next = node;
-        }
-
-        linkedList->size++;
-        return 0;
-}
-
-// O(1)
-int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
-{
-	if (Size(linkedList) == 0)
-		return -1;
-
-	Node *node;
-	if (item == NULL)
+	Node *member = NULL;
+	if ((member = (Node*)malloc(sizeof(Node))) == NULL)
 	{
-		node = linkedList->head;
-		linkedList->head = node->next;
+		perror("Error message");
+		return false;
+	}
+
+	member->data = (void*)data;
+	member->next = NULL;
+	if (Size(linkedList) == 0)
+	{
+		linkedList->head = member;
 	}
 	else
 	{
-		node = item->next;
-		if (node != NULL)
-			item->next = node->next;
+		member->next = linkedList->head;
+		linkedList->head = member;
 	}
 
-	*data = node->data;
-	linkedList->size--;
-	linkedList->Delete(node);
+	linkedList->size++;
+	return true;
+}
 
-	return 0;
+// O(n)
+bool InsertAtEnd(LinkedList* const linkedList, const void* const data)
+{
+	Node *member = NULL;
+	if ((member = (Node*)malloc(sizeof(Node))) == NULL)
+	{
+		perror("Error message");
+		return false;
+	}
+
+	member->data = (void*)data;
+	member->next = NULL;
+	if (Size(linkedList) == 0)
+	{
+		linkedList->head = member;
+	}
+	else
+	{
+		Node *temp = linkedList->head;
+		while (temp->next != NULL)
+		{
+			temp = temp->next;
+		}
+		temp->next = member;
+	}
+
+	linkedList->size++;
+	return true;
+}
+
+// O(1)
+bool InsertAfter(LinkedList* const linkedList, Node* const item, const void* const data)
+{
+	Node *member = NULL;
+    if ((member = malloc(sizeof(Node))) == NULL)
+    {
+		perror("Error message");
+		return false;
+	}
+
+    member->data = (void*)data;
+	member->next = NULL;
+    if (item == NULL)
+	{
+		perror("Error message");
+		return false;
+	}
+	else
+	{
+		member->next = item->next;
+		item->next = member;
+	}
+
+	linkedList->size++;
+	return true;
+}
+
+// O(1)
+bool RemoveAtFront(LinkedList* const linkedList, void **data)
+{
+	if (Size(linkedList) == 0)
+	{
+		perror("Error message");
+		return false;
+	}
+	else
+	{
+		Node *member = linkedList->head;
+		linkedList->head = member->next;
+		linkedList->size--;
+		*data = member->data;
+		
+		free(member);
+		return true;
+	}
+}
+
+// O(n)
+bool RemoveAtEnd(LinkedList* const linkedList, void **data)
+{
+	Node *member = linkedList->head;
+	if (Size(linkedList) == 0)
+	{
+		perror("Error message");
+		return false;
+	}
+	else if (member->next == NULL)
+	{
+		*data = member->data;
+		linkedList->head = member->next;
+		linkedList->size--;
+		free(member);
+	}
+	else
+	{
+		while (member->next->next != NULL)
+			member = member->next;
+
+		Node *remove = member->next;
+		member->next = NULL;
+		*data = remove->data;
+		linkedList->size--;
+		free(remove);
+	}
+
+	return true;
+}
+
+// O(n)
+bool RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
+{
+	if (Size(linkedList) == 0)
+	{
+		perror("Error message");
+		return false;
+	}
+
+	Node *member = NULL;
+	if (item == NULL)
+	{
+		member = linkedList->head;
+		*data = member->data;
+		linkedList->head = member->next;
+	}
+	else if (item->next != NULL)
+	{
+		member = item->next;
+		item->next = member->next;
+		*data = member->data;
+	}
+	else // Last node
+	{
+		while (member->next->next != NULL)
+			member = member->next;
+
+		member = item->next;
+		*data = member->data;
+
+		if (member != NULL)
+			item->next = member->next;
+	}
+
+	linkedList->size--;
+	free(member);
+
+	return true;
 }
 
 // O(1)
@@ -70,33 +200,38 @@ int Size(const LinkedList* const linkedList)
 }
 
 // O(n)
-Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const node, const void* const data))
+Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const member, const void* const data))
 {
-	Node *node = linkedList->head;
-	while (node != NULL)
+	Node *member = linkedList->head;
+	while (member != NULL)
 	{
-		if (Compare(node, data) == 1)
-			return node;
-		node = node->next;
+		if (Compare(member, data) == 1)
+			return member;
+		member = member->next;
 	}
 
 	return NULL;
 }
 
 // O(n)
-int Destroy(LinkedList* const linkedList, void(*Delete)(void *data))
+bool Destroy(LinkedList** const linkedList)
 {
 	void *remove;
-	while (Size(linkedList) > 0)
+	while (Size(*linkedList) > 0)
 	{
 		if ((remove = malloc(sizeof(void))) == NULL)
-			return -1;
+		{
+			perror("Error message");
+			return false;
+		}
 
-		if (RemoveAfter(linkedList, NULL, (void*)&remove) == 0)
-			Delete(remove);
+		if (RemoveAfter(*linkedList, NULL, (void*)&remove) == 1)
+			(*linkedList)->Delete(remove);
 	}
 
-	free(linkedList);
-	return 0;
+	free(*linkedList);
+	*linkedList = NULL;
+
+	return true;
 }
 

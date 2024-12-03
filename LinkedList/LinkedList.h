@@ -2,6 +2,7 @@
 #define LINKEDLIST
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 // Struct Definitions
 typedef struct Node {
@@ -13,15 +14,19 @@ typedef struct LinkedList {
         Node *head;
         int size;
 
-        void(*Delete)(Node *node);
+        void(*Delete)(void *data);
 } LinkedList;
 
 // Function Definitions
-int Initialize(LinkedList **linkedList, void(*Delete)(Node *node));
-int InsertAfter(LinkedList* const linkedList, Node* const item, const void* const data);
-int RemoveAfter(LinkedList* const linkedList, Node* const item, void **data);
+bool Initialize(LinkedList **linkedList, void(*Delete)(void *data));
+bool InsertAtFront(LinkedList* const linkedList, const void* const data);
+bool InsertAtEnd(LinkedList* const linkedList, const void* const data);
+bool InsertAfter(LinkedList* const linkedList, Node* const item, const void* const data);
+bool RemoveAtFront(LinkedList* const linkedList, void **data);
+bool RemoveAtEnd(LinkedList* const linkedList, void **data);
+bool RemoveAfter(LinkedList* const linkedList, Node* const item, void **data);
 int Size(const LinkedList* const linkedList);
-Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const node, const void* const data));
-int Destroy(LinkedList* const linkedList, void(*Delete)(void *data));
+Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const member, const void* const data));
+bool Destroy(LinkedList **linkedList);
 
 #endif

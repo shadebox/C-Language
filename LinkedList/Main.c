@@ -5,54 +5,56 @@
 int* CreateElement(int data);
 void Print(const LinkedList* const linkedList);
 int Compare(const Node* const node, const void* const data);
-void DeleteNode(Node *node);
-void Delete(void *data);
+void DeleteInteger(void *data);
 
 int main(void)
 {
 	LinkedList *linkedList;
-    if (Initialize(&linkedList, DeleteNode) == -1)
+    if (Initialize(&linkedList, DeleteInteger) == false)
 		return -1;
 
 	int *value = CreateElement(1);
 	if(value == NULL)
 		return -1;
-    InsertAfter(linkedList, NULL, (void *)value);
+		
+	if (InsertAtFront(linkedList, (void*)value) == false)
+		return -1;
 
-	Node *node;
-	if((node = GetNode(linkedList, value, Compare)) == NULL)
+	Node *member;
+	if ((member = GetNode(linkedList, value, Compare)) == NULL)
 		return -1;
 
 	value = CreateElement(2);
 	if(value == NULL)
 		return -1;
-    InsertAfter(linkedList, node, (void *)value);
 
-	if((node = GetNode(linkedList, value, Compare)) == NULL)
+	if (InsertAfter(linkedList, member, (void*)value) == false)
 		return -1;
-
+	member = NULL;
+	
 	value = CreateElement(3);
 	if(value == NULL)
 		return -1;
-    InsertAfter(linkedList, node, (void *)value);
 
-	printf("Size after insert %d\n", Size(linkedList));
+	if (InsertAtEnd(linkedList, (void*)value) == false)
+		return -1;
+
 	Print(linkedList);
+
+	if ((member = GetNode(linkedList, value, Compare)) == NULL)
+		return -1;
 
 	if ((value = (int *)malloc(sizeof(int))) == NULL)
 		return -1;
-    if (RemoveAfter(linkedList, node, (void *)&value) == -1)
-		printf("Failed to remove node\n");
+	
+    if (RemoveAfter(linkedList, member, (void *)&value) == false)
+		printf("Failed to remove member\n");
 	else
 		printf("Value removed %d\n", *value);
 
-	printf("Size after remove %d\n", Size(linkedList));
-	Print(linkedList);
-
-	if (Destroy(linkedList, Delete) == -1)
+	if (Destroy(&linkedList) == false)
 		return -1;
-	else
-		linkedList == NULL;
+
 	printf("LinkedList destroyed");
 
 	return 0;
@@ -70,6 +72,8 @@ int* CreateElement(int data)
 
 void Print(const LinkedList* const linkedList)
 {
+	printf("Size: %d\n", Size(linkedList));
+
 	Node *member = linkedList->head;
 	printf("List: ");
 	while (member != NULL)
@@ -88,12 +92,8 @@ int Compare(const Node* const node, const void* const data)
 	return 0;
 }
 
-void DeleteNode(Node *node)
+void DeleteInteger(void *data)
 {
-	free(node);
-}
-
-void Delete(void *data)
-{
-	free(data);
+	free((int*)data);
+	data = NULL;
 }
