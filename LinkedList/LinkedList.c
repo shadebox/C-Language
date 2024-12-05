@@ -207,7 +207,7 @@ Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*C
 }
 
 // O(n)
-bool Destroy(LinkedList** const linkedList)
+bool Destroy(LinkedList** linkedList)
 {
 	void *remove;
 	while (Size(*linkedList) > 0)

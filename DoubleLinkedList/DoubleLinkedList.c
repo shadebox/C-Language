@@ -1,146 +1,243 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <errno.h>
 #include "DoubleLinkedList.h"
 
+// Function Definition
+
 // O(1)
-int Initialize(DoubleLinkedList **doubleLinkedList, void(*Delete)(Node *data))
+bool Initialize(DoubleLinkedList **doubleLinkedList, void(*Delete)(void *data))
 {
 	if ((*doubleLinkedList = (DoubleLinkedList*)malloc(sizeof(DoubleLinkedList))) == NULL)
-		return -1;
+	{
+		perror("Error message");
+		return false;
+	}
 
 	(*doubleLinkedList)->head = NULL;
 	(*doubleLinkedList)->tail = NULL;
 	(*doubleLinkedList)->size = 0;
 	(*doubleLinkedList)->Delete = Delete;
 
-	return 1;
+	return true;
 }
 
 // O(1)
-int InsertBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data)
+bool InsertAtFront(DoubleLinkedList* const doubleLinkedList, const void* const data)
 {
-	Node *node;
-	if ((node = (Node *)malloc(sizeof(Node))) == NULL)
-		return -1;
-
-	if (item == NULL)
+	Node *member = NULL;
+	if ((member = (Node*)malloc(sizeof(Node))) == NULL)
 	{
-		if (doubleLinkedList->head != NULL)
-			return -1;
+		perror("Error message");
+		return false;
+	}
 
-		doubleLinkedList->head = doubleLinkedList->tail = node;
-		node->next = node->previous = NULL;
+	member->data = (void*)data;
+	member->previous = NULL;
+	if (Size(doubleLinkedList) == 0)
+	{
+		doubleLinkedList->head = doubleLinkedList->tail = member;
+		member->next = NULL;
 	}
 	else
 	{
-		node->previous = item->previous;
-		node->next = item;
-		item->previous->next = node;
-		item->previous = node;
-
-		if (node->previous == NULL)
-			doubleLinkedList->head = node;
+		member->next = doubleLinkedList->head;
+		doubleLinkedList->head->previous = member;
+		doubleLinkedList->head = member;
 	}
 
-	node->data = (void *)data;
 	doubleLinkedList->size++;
-
-	return 0;
+	return true;
 }
 
 // O(1)
-int InsertAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data)
+bool InsertAtEnd(DoubleLinkedList* const doubleLinkedList, const void* const data)
 {
-	Node *node;
-	if ((node = (Node *)malloc(sizeof(Node))) == NULL)
-		return -1;
-
-	if (item == NULL)
+	Node *member = NULL;
+	if ((member = (Node*)malloc(sizeof(Node))) == NULL)
 	{
-		if (doubleLinkedList->tail != NULL)
-			return -1;
-
-		doubleLinkedList->head = doubleLinkedList->tail = node;
-		node->next = node->previous = NULL;
+		perror("Error message");
+		return false;
+	}
+	
+	member->data = (void*)data;
+	member->next = NULL;
+	if (Size(doubleLinkedList) == 0)
+	{
+		doubleLinkedList->head = doubleLinkedList->tail = member;
+		member->previous = NULL;
 	}
 	else
 	{
-		node->next = item->next;
-		item->next = node;
-		node->previous = item;
-
-		if (node->next == NULL)
-			doubleLinkedList->tail = node;
+		member->previous = doubleLinkedList->tail;
+		doubleLinkedList->tail->next = member;
+		doubleLinkedList->tail = member;
 	}
 
-	node->data = (void *)data;
 	doubleLinkedList->size++;
-
-	return 0;
+	return true;
 }
 
 // O(1)
-int RemoveAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data)
+bool InsertBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data)
+{
+	if (item == NULL)
+	{
+		return InsertAtFront(doubleLinkedList, data);
+	}
+	else
+	{
+		Node *member = NULL;
+		if ((member = (Node *)malloc(sizeof(Node))) == NULL)
+		{
+			perror("Error message");
+			return false;
+		}
+
+		
+		member->data = (void *)data;
+		member->previous = item->previous;
+		member->next = item;
+		item->previous = member;
+
+		doubleLinkedList->size++;
+		if (member->previous == NULL)
+			doubleLinkedList->head = member;
+		else
+			member->previous->next = member;
+		
+		return true;
+	}
+}
+
+// O(1)
+bool InsertAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data)
+{
+	if (item == NULL)
+	{
+		return InsertAtEnd(doubleLinkedList, data);
+	}
+	else
+	{
+		Node *member = NULL;
+		if ((member = (Node *)malloc(sizeof(Node))) == NULL)
+		{
+			perror("Error message");
+			return false;
+		}
+
+		member->data = (void *)data;
+		member->next = item->next;
+		item->next = member;
+		member->previous = item;
+
+		doubleLinkedList->size++;
+		if (member->next == NULL)
+			doubleLinkedList->tail = member;
+
+		return true;
+	}
+}
+
+// O(1)
+bool RemoveAtFront(DoubleLinkedList* const doubleLinkedList, void** data)
 {
 	if (Size(doubleLinkedList) == 0)
-		return -1;
+		return false;
 
-	Node *node;
+	Node *member = doubleLinkedList->head;
+	*data = (void*)member->data;
+	doubleLinkedList->head = member->next;
+	doubleLinkedList->head->previous = NULL;
+	doubleLinkedList->size--;
+
+	if (Size(doubleLinkedList) == 0)
+		doubleLinkedList->tail = NULL;
+
+	free(member);
+	return true;
+}
+
+// O(1)
+bool RemoveAtEnd(DoubleLinkedList* const doubleLinkedList, void** data)
+{
+	if (Size(doubleLinkedList) == 0)
+		return false;
+
+	Node *member = doubleLinkedList->tail;
+	*data = (void*)member->data;
+	doubleLinkedList->tail = member->previous;
+	doubleLinkedList->size--;
+
+	if (doubleLinkedList->tail != NULL)
+		doubleLinkedList->tail->next = NULL;
+
+	if (Size(doubleLinkedList) == 0)
+		doubleLinkedList->head = NULL;
+
+	free(member);
+	return true;
+}
+
+// O(1)
+bool RemoveAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data)
+{
+	if (Size(doubleLinkedList) == 0)
+		return false;
+	
 	if (item == NULL)
 	{
-		node = doubleLinkedList->tail;
-		doubleLinkedList->tail = node->previous;
-
-		if (doubleLinkedList->tail != NULL)
-			doubleLinkedList->tail->next = NULL;
+		return RemoveAtEnd(doubleLinkedList, data);
 	}
 	else
 	{
-		node = item->next;
-		item->next = node->next;
-		item->next->previous = item;
+		Node *member = item->next;
+		if (member == NULL)
+			return false;
 
-		if (node->next == NULL)
+		*data = (void*)member->data;
+		item->next = member->next;
+		doubleLinkedList->size--;
+
+		if (item->next != NULL)
+			item->next->previous = item;
+		else
 			doubleLinkedList->tail = item;
+
+		free(member);
+		return true;
 	}
-
-	*data = node->data;
-	doubleLinkedList->size--;
-	doubleLinkedList->Delete(node);
-
-	return 0;
 }
 
 // O(1)
-int RemoveBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data)
+bool RemoveBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data)
 {
 	if (Size(doubleLinkedList) == 0)
-		return - 1;
+		return false;
 
-	Node *node;
 	if (item == NULL)
 	{
-		node = doubleLinkedList->head;
-		doubleLinkedList->head = node->next;
-
-		if (doubleLinkedList->head != NULL)
-			doubleLinkedList->head->previous = NULL;
+		return RemoveAtFront(doubleLinkedList, data);
 	}
 	else
 	{
-		node = item->previous;
-		item->previous = node->previous;
-		node->previous->next = item;
+		Node *member = item->previous;
+		if (member == NULL)
+			return false;
 
-		if (node->previous == NULL)
+		*data = (void*)member->data;
+		item->previous = member->previous;
+		doubleLinkedList->size--;
+
+		if (item->previous != NULL)
+			item->previous->next = item;
+		else
 			doubleLinkedList->head = item;
+		
+		free(member);
+		return true;
 	}
-
-	*data = node->data;
-	doubleLinkedList->size--;
-	doubleLinkedList->Delete(node);
-
-	return 0;
 }
 
 // O(1)
@@ -150,33 +247,39 @@ int Size(const DoubleLinkedList* const doubleLinkedList)
 }
 
 // O(n)
-Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(*Compare)(const Node* const node, const void* const data))
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(*Compare)(const Node* const member, const void* const data))
 {
-	Node *node = doubleLinkedList->head;
-	while (node != NULL)
+	Node *member = doubleLinkedList->head;
+	while (member != NULL)
 	{
-		if (Compare(node, data) == 1)
-			return node;
-		node = node->next;
+		if (Compare(member, data) == 1)
+			return member;
+		member = member->next;
 	}
 
 	return NULL;
 }
 
 // O(n)
-int Destroy(DoubleLinkedList* const doubleLinkedList, void(*Delete)(void *data))
+bool Destroy(DoubleLinkedList** doubleLinkedList)
 {
-	void *removed;
-	while (Size(doubleLinkedList) > 0)
+	void *removed = NULL;
+	while (Size(*doubleLinkedList) > 0)
 	{
 		if ((removed = malloc(sizeof(void))) == NULL)
-			return -1;
+		{
+			perror("Error message");
+			return false;
+		}
 
-		if (RemoveAfter(doubleLinkedList, NULL, &removed) == 0)
-			Delete(removed);
+		if (RemoveAfter(*doubleLinkedList, NULL, &removed) == true)
+			(*doubleLinkedList)->Delete(removed);
+		else
+			return false;
 	}
 
-	free(doubleLinkedList);
+	free(*doubleLinkedList);
+	*doubleLinkedList = NULL;
 
-	return 0;
+	return true;
 }

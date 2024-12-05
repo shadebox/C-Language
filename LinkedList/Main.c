@@ -14,7 +14,7 @@ int main(void)
 		return -1;
 
 	int *value = CreateElement(1);
-	if(value == NULL)
+	if (value == NULL)
 		return -1;
 		
 	if (InsertAtFront(linkedList, (void*)value) == false)
@@ -25,14 +25,14 @@ int main(void)
 		return -1;
 
 	value = CreateElement(2);
-	if(value == NULL)
+	if (value == NULL)
 		return -1;
 
 	if (InsertAfter(linkedList, member, (void*)value) == false)
 		return -1;
 
 	value = CreateElement(3);
-	if(value == NULL)
+	if (value == NULL)
 		return -1;
 
 	if (InsertAtEnd(linkedList, (void*)value) == false)
