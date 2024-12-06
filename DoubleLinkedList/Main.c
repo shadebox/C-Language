@@ -5,7 +5,7 @@
 
 int* CreateElement(int data);
 void Print(const DoubleLinkedList* const doubleLinkedList);
-int Compare(const Node* const node, const void* const data);
+int Compare(const Node* const member, const void* const data);
 void DeleteInteger(void *data);
 
 int main(void)
@@ -96,19 +96,19 @@ void Print(const DoubleLinkedList* const doubleLinkedList)
 	printf("DoubleLinkedList Size: %d\n", Size(doubleLinkedList));
 
 	printf("List: ");
-	Node *node = doubleLinkedList->head;
-	while (node != NULL)
+	Node *member = doubleLinkedList->head;
+	while (member != NULL)
 	{
-		printf("%d ", *(int *)node->data);
-		node = node->next;
+		printf("%d ", *(int *)member->data);
+		member = member->next;
 	}
 
 	printf("\n");
 }
 
-int Compare(const Node* const node, const void* const data)
+int Compare(const Node* const member, const void* const data)
 {
-	if (*(int*)data == *(int*)node->data)
+	if (*(int*)data == *(int*)member->data)
 		return 1;
 	return 0;
 }
