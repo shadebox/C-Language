@@ -4,48 +4,54 @@
 
 int* CreateElement(int data);
 void Print(const Stack* const stack);
-void DeleteNode(Node *data);
-void Delete(void *data);
+void DeleteInteger(void *data);
 
 int main(void)
 {
     Stack *stack;
-    if (Initialize(&stack, DeleteNode) == -1)
+    if (Initialize(&stack, DeleteInteger) == false)
         return -1;
 
     int *value = NULL;
     if ((value = CreateElement(1)) == NULL)
         return -1;
-    Push(stack, value);
+
+    if (Push(stack, value) == false)
+        return -1;
 
     if ((value = CreateElement(2)) == NULL)
         return -1;
-    Push(stack, value);
+
+    if (Push(stack, value) == false)
+        return -1;
 
     if ((value = CreateElement(3)) == NULL)
         return -1;
-    Push(stack, value);
-
-    if (Peek(stack, (void *)&value) == -1)
+    
+    if (Push(stack, value) == false)
         return -1;
+
+    if (IsEmpty(stack) == false)
+        Print(stack);
+    
+    if (Peek(stack, (void *)&value) == false)
+        return -1;
+    
     printf("Peek: %d\n", *value);
 
-    printf("Stack size: %d\n", Size(stack));
-    Print(stack);
-
-    if (Pop(stack, (void *)&value) == -1)
+    if (Pop(stack, (void *)&value) == false)
         return -1;
+    
     printf("Pop: %d\n", *value);
 
-    printf("Stack size: %d\n", Size(stack));
-    Print(stack);
+    if (IsEmpty(stack) == false)
+        Print(stack);
 
-    if (Destroy(stack, Delete) == -1)
+    if (Destroy(&stack) == false)
         return -1;
-    else
-        stack = NULL;
 
 	printf("Stack destroyed");
+
     return 0;
 }
 
@@ -61,6 +67,8 @@ int* CreateElement(int data)
 
 void Print(const Stack* const stack)
 {
+    printf("Stack size: %d\n", Size(stack));
+
     printf("List: ");
     Node* member = stack->top;
     while (member != NULL)
@@ -71,12 +79,9 @@ void Print(const Stack* const stack)
     printf("\n");
 }
 
-void DeleteNode(Node *data)
+void DeleteInteger(void *data)
 {
-    free(data);
-}
-
-void Delete(void *data)
-{
-    free(data);
+    printf("Deleting %d ...\n", *(int*)data);
+    free((int*)data);
+	data = NULL;;
 }

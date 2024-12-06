@@ -1,6 +1,8 @@
 #ifndef STACK_HEADER
 #define STACK_HEADER
 
+#include <stdbool.h>
+
 // Struct Definition
 typedef struct Node {
     void *data;
@@ -11,15 +13,16 @@ typedef struct Stack {
     Node *top;
     int size;
 
-    void(*Delete)(Node *node);
+    void(*Delete)(void *data);
 } Stack;
 
 // Function Definition
-int Initialize(Stack **stack, void(*Delete)(Node *node));
-int Push(Stack* const stack, const void* const data);
-int Pop(Stack* const stack, const void **data);
-int Peek(const Stack* const stack, const void **data);
+bool Initialize(Stack **stack, void(*Delete)(void *data));
+bool Push(Stack* const stack, const void* const data);
+bool Pop(Stack* const stack, const void **data);
+bool Peek(const Stack* const stack, const void **data);
 int Size(const Stack* const stack);
-int Destroy(Stack* const stack, void (*Delete)(void *data));
+bool IsEmpty(const Stack* const stack);
+bool Destroy(Stack **stack);
 
 #endif
