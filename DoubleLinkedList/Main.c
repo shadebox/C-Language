@@ -5,7 +5,7 @@
 
 int* CreateElement(int data);
 void Print(const DoubleLinkedList* const doubleLinkedList);
-int Compare(const Node* const member, const void* const data);
+bool Compare(const Node* const member, const void* const data);
 void DeleteInteger(void *data);
 
 int main(void)
@@ -106,11 +106,11 @@ void Print(const DoubleLinkedList* const doubleLinkedList)
 	printf("\n");
 }
 
-int Compare(const Node* const member, const void* const data)
+bool Compare(const Node* const member, const void* const data)
 {
 	if (*(int*)data == *(int*)member->data)
-		return 1;
-	return 0;
+		return true;
+	return false;
 }
 
 void DeleteInteger(void *data)

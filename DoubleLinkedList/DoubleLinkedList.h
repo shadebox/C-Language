@@ -30,7 +30,7 @@ bool RemoveAtEnd(DoubleLinkedList* const doubleLinkedList, void** data);
 bool RemoveAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data);
 bool RemoveBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data);
 int Size(const DoubleLinkedList* const doubleLinkedList);
-Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(*Compare)(const Node* const member, const void* const data));
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, bool(*Compare)(const Node* const member, const void* const data));
 bool Destroy(DoubleLinkedList** doubleLinkedList);
 
 #endif

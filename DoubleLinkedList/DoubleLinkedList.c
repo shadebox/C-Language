@@ -247,12 +247,12 @@ int Size(const DoubleLinkedList* const doubleLinkedList)
 }
 
 // O(n)
-Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, int(*Compare)(const Node* const member, const void* const data))
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, bool(*Compare)(const Node* const member, const void* const data))
 {
 	Node *member = doubleLinkedList->head;
 	while (member != NULL)
 	{
-		if (Compare(member, data) == 1)
+		if (Compare(member, data) == true)
 			return member;
 		member = member->next;
 	}
