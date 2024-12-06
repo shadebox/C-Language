@@ -1,6 +1,8 @@
 #ifndef QUEUE_HEADER
 #define QUEUE_HEADER
 
+#include <stdbool.h>
+
 // Struct Definition
 typedef struct Node {
     void *data;
@@ -12,16 +14,17 @@ typedef struct Queue {
     Node* head;
     Node* tail;
 
-    void(*Delete)(Node *data);
+    void(*Delete)(void *data);
 } Queue;
 
 // Function Definitions
-int Initialize(Queue **queue, void(*Delete)(Node *data));
-int Enqueue(Queue* const queue, const void* const data);
-int Peek(const Queue* const queue, const void **data);
-int Dequeue(Queue* const queue, const void **data);
+bool Initialize(Queue **queue, void(*Delete)(void *data));
+bool Enqueue(Queue* const queue, const void* const data);
+bool Peek(const Queue* const queue, const void **data);
+bool Dequeue(Queue* const queue, const void **data);
+bool IsEmpty(const Queue* const queue);
 int Size(const Queue* const queue);
-int Destroy(Queue* const queue, void(*Delete)(void *data));
+bool Destroy(Queue** queue);
 
 #endif
 

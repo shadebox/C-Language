@@ -4,52 +4,49 @@
 
 int* CreateElement(int data);
 void Print(const Queue* const queue);
-void DeleteNode(Node *data);
-void Delete(void *data);
+void DeleteInteger(void *data);
 
 int main(void)
 {
     Queue* queue;
 
-    if (Initialize(&queue, DeleteNode) == -1)
+    if (Initialize(&queue, DeleteInteger) == false)
         return -1;
 
     int *value = NULL;
     if ((value = CreateElement(1)) == NULL)
         return -1;
-    Enqueue(queue, value);
+    
+    if (Enqueue(queue, value) == false)
+        return -1;
 
-    value = NULL;
     if ((value = CreateElement(2)) == NULL)
         return -1;
-    Enqueue(queue, value);
+    
+    if (Enqueue(queue, value) == false)
+        return -1;
 
-    value = NULL;
     if ((value = CreateElement(3)) == NULL)
         return -1;
-    Enqueue(queue, value);
-
-    if(Peek(queue, (void*)&value) == -1)
-        return -1;
-    printf("Peek: %d\n", *value);
-
-    if ((value = CreateElement(4)) == NULL)
-        return -1;
-    Enqueue(queue, value);
     
+    if (Enqueue(queue, value) == false)
+        return -1;
+
     Print(queue);
 
-    if (Dequeue(queue, (void *)&value) == -1)
+    if (Dequeue(queue, (void*)&value) == false)
         return -1;
+
     printf("Dequeue: %d\n", *value);
 
-    printf("Queue size: %d\n", Size(queue));
+    if (Peek(queue, (void*)&value) == true)
+        printf("Peek value: %d\n", *value);
+
     Print(queue);
 
-    if (Destroy(queue, Delete) == -1)
+    if (Destroy(&queue) == false)
         return -1;
-    else
-        queue = NULL;
+
 	printf("Stack destroyed");
 
     return 0;
@@ -67,6 +64,8 @@ int* CreateElement(int data)
 
 void Print(const Queue* const queue)
 {
+    printf("Queue size: %d\n", Size(queue));
+
     printf("List: ");
     Node* member = queue->head;
     while (member != NULL)
@@ -77,12 +76,9 @@ void Print(const Queue* const queue)
     printf("\n");
 }
 
-void DeleteNode(Node *data)
+void DeleteInteger(void *data)
 {
+    printf("Deleting %d ...\n", *(int*)data);
     free(data);
-}
-
-void Delete(void *data)
-{
-    free(data);
+    data = NULL;
 }

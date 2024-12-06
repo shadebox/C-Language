@@ -1,67 +1,82 @@
 #include <stdlib.h>
+#include <errno.h>
 #include "Queue.h"
 
 // O(1)
-int Initialize(Queue **queue, void(*Delete)(Node *data))
+bool Initialize(Queue **queue, void(*Delete)(void *data))
 {
     if ((*queue = (Queue *)malloc(sizeof(Queue))) == NULL)
-        return -1;
+    {
+        perror("Error message");
+        return false;
+    }
 
     (*queue)->size = 0;
     (*queue)->head = (*queue)-> tail = NULL;
     (*queue)->Delete = Delete;
 
-    return 1;
+    return true;
 }
 
 // O(1)
-int Enqueue(Queue* const queue, const void* const data)
+bool Enqueue(Queue* const queue, const void* const data)
 {
-    Node *node = NULL;
-    if ((node = (Node*)malloc(sizeof(Node))) == NULL)
-        return -1;
+    Node *member = NULL;
+    if ((member = (Node*)malloc(sizeof(Node))) == NULL)
+    {
+        perror("Error message");
+        return false;
+    }
 
+    member->data = (void*)data;
+    member->next = NULL;
     if (Size(queue) == 0)
     {
-        queue->head = queue->tail = node;
+        queue->head = queue->tail = member;
     }
     else
     {
-        queue->tail->next = node;
-        queue->tail = node;
+        queue->tail->next = member;
+        queue->tail = member;
     }
 
-    node->data = (void*)data;
-    node->next = NULL;
     queue->size++;
-
-    return 0;
+    return true;
 }
 
 // O(1)
-int Peek(const Queue* const queue, const void **data)
+bool Peek(const Queue* const queue, const void **data)
 {
     if (Size(queue) == 0)
-        return -1;
+        return false;
 
     *data = queue->head->data;
-    return 0;
+    return true;
 }
 
 // O(1)
-int Dequeue(Queue* const queue, const void **data)
+bool Dequeue(Queue* const queue, const void **data)
 {
     if (Size(queue) == 0)
-        return -1;
+        return false;
 
     Node *member = queue->head;
     *data = member->data;
 
     queue->head = member->next;
     queue->size--;
-    queue->Delete(member);
+    free(member);
 
-    return 0;
+    return true;
+}
+
+// O(1)
+bool IsEmpty(const Queue* const queue)
+{
+    if (Size(queue) == 0)
+        return true;
+    else
+        return false;
 }
 
 // O(1)
@@ -70,17 +85,24 @@ int Size(const Queue* const queue)
     return queue->size;
 }
 
-int Destroy(Queue* const queue, void(*Delete)(void *data))
+// O(n)
+bool Destroy(Queue** queue)
 {
     void *remove = NULL;
-    while (Size(queue) > 0)
+    while (Size(*queue) > 0)
     {
         if ((remove = malloc(sizeof(void))) == NULL)
-            return -1;
+        {
+            perror("Error message");
+            return false;
+        }
 
-        if (Dequeue(queue, (void*)&remove) == 0)
-            Delete(remove);
+        if (Dequeue(*queue, (void*)&remove) == true)
+            (*queue)->Delete(remove);
     }
 
-    return 0;
+    free(*queue);
+    *queue = NULL;
+
+    return true;
 }
