@@ -92,6 +92,7 @@ int Compare(const Node* const node, const void* const data)
 
 void DeleteInteger(void *data)
 {
+    printf("Deleting %d ...\n", *(int*)data);
 	free((int*)data);
 	data = NULL;
 }

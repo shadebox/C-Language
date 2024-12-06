@@ -218,7 +218,7 @@ bool Destroy(LinkedList** linkedList)
 			return false;
 		}
 
-		if (RemoveAfter(*linkedList, NULL, (void*)&remove) == 1)
+		if (RemoveAfter(*linkedList, NULL, (void*)&remove) == true)
 			(*linkedList)->Delete(remove);
 	}
 
