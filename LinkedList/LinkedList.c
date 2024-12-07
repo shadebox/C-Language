@@ -4,7 +4,7 @@
 #include "LinkedList.h"
 
 // O(1)
-bool Initialize(LinkedList **linkedList, void(*Delete)(void *data))
+bool Initialize(LinkedList **linkedList, bool(*Compare)(const Node* const member, const void* const data), void(*Delete)(void *data))
 {
 	if ((*linkedList = (LinkedList*)malloc(sizeof(LinkedList))) == NULL)
 	{
@@ -14,6 +14,7 @@ bool Initialize(LinkedList **linkedList, void(*Delete)(void *data))
 
 	(*linkedList)->head = NULL;
 	(*linkedList)->size = 0;
+	(*linkedList)->Compare = Compare;
 	(*linkedList)->Delete = Delete;
 
 	return true;
@@ -193,12 +194,12 @@ int Size(const LinkedList* const linkedList)
 }
 
 // O(n)
-Node* GetNode(const LinkedList* const linkedList, const void* const data, int(*Compare)(const Node* const member, const void* const data))
+Node* GetNode(const LinkedList* const linkedList, const void* const data)
 {
 	Node *member = linkedList->head;
 	while (member != NULL)
 	{
-		if (Compare(member, data) == 1)
+		if (linkedList->Compare(member, data) == true)
 			return member;
 		member = member->next;
 	}

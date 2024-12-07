@@ -4,13 +4,13 @@
 
 int* CreateElement(int data);
 void Print(const LinkedList* const linkedList);
-int Compare(const Node* const node, const void* const data);
-void DeleteInteger(void *data);
+bool Compare(const Node* const member, const void* const data);
+void Delete(void *data);
 
 int main(void)
 {
 	LinkedList *linkedList;
-    if (Initialize(&linkedList, DeleteInteger) == false)
+    if (Initialize(&linkedList, Compare, Delete) == false)
 		return -1;
 
 	int *value = CreateElement(1);
@@ -21,7 +21,7 @@ int main(void)
 		return -1;
 
 	Node *member;
-	if ((member = GetNode(linkedList, value, Compare)) == NULL)
+	if ((member = GetNode(linkedList, value)) == NULL)
 		return -1;
 
 	value = CreateElement(2);
@@ -83,14 +83,14 @@ void Print(const LinkedList* const linkedList)
 	printf("\n");
 }
 
-int Compare(const Node* const node, const void* const data)
+bool Compare(const Node* const member, const void* const data)
 {
-	if (*(int*)data == *(int*)node->data)
-		return 1;
-	return 0;
+	if (*(int*)data == *(int*)member->data)
+		return true;
+	return false;
 }
 
-void DeleteInteger(void *data)
+void Delete(void *data)
 {
     printf("Deleting %d ...\n", *(int*)data);
 	free((int*)data);

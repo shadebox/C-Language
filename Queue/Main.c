@@ -4,13 +4,13 @@
 
 int* CreateElement(int data);
 void Print(const Queue* const queue);
-void DeleteInteger(void *data);
+void Delete(void *data);
 
 int main(void)
 {
     Queue* queue;
 
-    if (Initialize(&queue, DeleteInteger) == false)
+    if (Initialize(&queue, Delete) == false)
         return -1;
 
     int *value = NULL;
@@ -76,7 +76,7 @@ void Print(const Queue* const queue)
     printf("\n");
 }
 
-void DeleteInteger(void *data)
+void Delete(void *data)
 {
     printf("Deleting %d ...\n", *(int*)data);
     free(data);

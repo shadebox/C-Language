@@ -7,7 +7,7 @@
 // Function Definition
 
 // O(1)
-bool Initialize(DoubleLinkedList **doubleLinkedList, void(*Delete)(void *data))
+bool Initialize(DoubleLinkedList **doubleLinkedList, bool(*Compare)(const Node* const member, const void* const data), void(*Delete)(void *data))
 {
 	if ((*doubleLinkedList = (DoubleLinkedList*)malloc(sizeof(DoubleLinkedList))) == NULL)
 	{
@@ -18,6 +18,7 @@ bool Initialize(DoubleLinkedList **doubleLinkedList, void(*Delete)(void *data))
 	(*doubleLinkedList)->head = NULL;
 	(*doubleLinkedList)->tail = NULL;
 	(*doubleLinkedList)->size = 0;
+	(*doubleLinkedList)->Compare = Compare;
 	(*doubleLinkedList)->Delete = Delete;
 
 	return true;
@@ -247,12 +248,12 @@ int Size(const DoubleLinkedList* const doubleLinkedList)
 }
 
 // O(n)
-Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, bool(*Compare)(const Node* const member, const void* const data))
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data)
 {
 	Node *member = doubleLinkedList->head;
 	while (member != NULL)
 	{
-		if (Compare(member, data) == true)
+		if (doubleLinkedList->Compare(member, data) == true)
 			return member;
 		member = member->next;
 	}

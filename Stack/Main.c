@@ -4,12 +4,12 @@
 
 int* CreateElement(int data);
 void Print(const Stack* const stack);
-void DeleteInteger(void *data);
+void Delete(void *data);
 
 int main(void)
 {
     Stack *stack;
-    if (Initialize(&stack, DeleteInteger) == false)
+    if (Initialize(&stack, Delete) == false)
         return -1;
 
     int *value = NULL;
@@ -79,7 +79,7 @@ void Print(const Stack* const stack)
     printf("\n");
 }
 
-void DeleteInteger(void *data)
+void Delete(void *data)
 {
     printf("Deleting %d ...\n", *(int*)data);
     free((int*)data);

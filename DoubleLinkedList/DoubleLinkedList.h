@@ -17,10 +17,11 @@ typedef struct DoubleLinkedList {
 	int size;
 
 	void(*Delete)(void *data);
+	bool(*Compare)(const Node* const member, const void* const data);
 } DoubleLinkedList;
 
 // Function Definition
-bool Initialize(DoubleLinkedList** doubleLinkedList, void(*Delete)(void *data));
+bool Initialize(DoubleLinkedList** doubleLinkedList, bool(*Compare)(const Node* const member, const void* const data), void(*Delete)(void *data));
 bool InsertAtFront(DoubleLinkedList* const doubleLinkedList, const void* const data);
 bool InsertAtEnd(DoubleLinkedList* const doubleLinkedList, const void* const data);
 bool InsertBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data);
@@ -30,7 +31,7 @@ bool RemoveAtEnd(DoubleLinkedList* const doubleLinkedList, void** data);
 bool RemoveAfter(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data);
 bool RemoveBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, void **data);
 int Size(const DoubleLinkedList* const doubleLinkedList);
-Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data, bool(*Compare)(const Node* const member, const void* const data));
+Node* GetNode(const DoubleLinkedList* const doubleLinkedList, const void* const data);
 bool Destroy(DoubleLinkedList** doubleLinkedList);
 
 #endif

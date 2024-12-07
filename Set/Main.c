@@ -9,59 +9,21 @@ int* CreateIntegerElement(int data);
 bool CompareInteger(const Node* const member, const void* const data);
 void PrintInteger(const Set* const set, char label);
 void DeleteInteger(void *data);
-// void DeleteNode(Node *data);
-// Set* InitializeSetValue(Set* values[], int size);
-// int CompareSets(const Node* const node, const void* const data);
-// void PrintSet(const void* const data);
 
-// Algorithm Definition
-// Set* Cover(Set* const member, Set* const subsets);
+int CoveringSetTest();
+Set* InitializeSetValue(Set* values[], int size);
+bool CompareSet(const Node* const member, const void* const data);
+void PrintSet(const Set* const set, char label);
+void DeleteSet(void *data);
 
 int main(void)
 {
-    if (IntegerSetTest() == -1)
+    // if (IntegerSetTest() == -1)
+    //     return -1;
+
+    if (CoveringSetTest() == -1)
         return -1;
 
-    /*printf("\nCovering Algorithm\n");
-    Set *members, *subsets, *covering;
-
-    int valueMemberSet[] = { 1, 2, 3, 4, 5 };
-    members = InitializeIntegerValue(valueMemberSet, 5);
-    
-    printf("Members size: %d\nMember: ", Size(members));
-    PrintIntegers(members);
-
-    // Initialize and create sets for subsets
-    Set *set1, *set2, *set3, *set4;
-
-    int valueSet1[] = { 1, 2, 3 };
-    set1 = InitializeIntegerValue(valueSet1, 3);
-
-    int valueSet2[] = { 1, 5 };
-    set2 = InitializeIntegerValue(valueSet2, 2);
-
-    int valueSet3[] = { 1, 2, 3, 4 };
-    set3 = InitializeIntegerValue(valueSet3, 4);
-
-    int valueSet4[] = { 5 };
-    set4 = InitializeIntegerValue(valueSet4, 1);
-    // Initialize and create sets for subsets
-
-    Set* valueSet[] = { set1, set2, set3, set4 };
-    subsets = InitializeSetValue(valueSet, 4);
-
-    printf("Covering started.\n");
-    if ((covering = Cover(members, subsets)) == NULL)
-        return -1;
-
-    Node* element = covering->head;
-    while(element != NULL)
-    {
-        PrintSet(element->data);
-        element = element->next;
-    }
-
-    printf("Covering ended.\n");*/
     return 0;
 }
 
@@ -177,93 +139,88 @@ void DeleteInteger(void *data)
     data = NULL;
 }
 
-// Set* InitializeSetValue(Set* values[], int size)
-// {
-//     Set *set;
-//     if (Initialize(&set, DeleteNode) == -1)
-//         return NULL;
+int CoveringSetTest()
+{
+    Set *members, *subsets, *covering;
 
-//     for (int i=0; i<size; i++)
-//         Insert(set, (void*)(*(values+i)), CompareSets);
-//     return set;
-// }
+    int valueMemberSet[] = { 1, 2, 3, 4, 5 };
+    members = InitializeIntegerValue(valueMemberSet, 5);
+    PrintInteger(members, 'M');
 
-// int CompareSets(const Node* const node, const void* const data)
-// {
-//     if ((Set*)node->data == (Set*)data)
-//         return 1;
-//     else
-//         return 0;
-// }
+    // Initialize and create sets for subsets
+    Set *set1, *set2, *set3, *set4;
 
-// void DeleteNode(Node *data)
-// {
-//     free(data);
-// }
+    int valueSet1[] = { 1, 2, 3 };
+    set1 = InitializeIntegerValue(valueSet1, 3);
 
-// void PrintSet(const void* const data)
-// {
-//     printf("List: ");
+    int valueSet2[] = { 1, 5 };
+    set2 = InitializeIntegerValue(valueSet2, 2);
 
-//     Set *set = (Set*)data;
-//     Node *member = set->head;
-//     while (member != NULL)
-//     {
-//         printf("%d ", *(int *)member->data);
-//         member = member->next;
-//     }
+    int valueSet3[] = { 1, 2, 3, 4 };
+    set3 = InitializeIntegerValue(valueSet3, 4);
 
-//     printf("\n");
-// }
+    int valueSet4[] = { 5 };
+    set4 = InitializeIntegerValue(valueSet4, 1);
+    // Initialize and create sets for subsets
 
-// Set* Cover(Set* const member, Set* const subsets)
-// {
-//     Set* covering;
-//     if (Initialize(&covering, DeleteNode) == -1)
-//         return NULL;
+    Set* valueSet[] = { set1, set2, set3, set4 };
+    subsets = InitializeSetValue(valueSet, 4);
 
-//     while (Size(member) > 0 && Size(subsets) > 0)
-//     {
-//         int largestSetSize = 0;
-//         Set *largestSet = NULL;
-//         Node *node = subsets->head;
+    PrintSet(subsets, 'S');
+
+    printf("\nCovering started\n");
+    if (Cover(members, subsets, &covering) == false)
+        return -1;
+
+    PrintSet(covering, 'C');
+    printf("Covering ended.\n");
+
+    return 0;
+}
+
+Set* InitializeSetValue(Set* values[], int size)
+{
+    Set *set;
+    if (Initialize(&set, DeleteSet) == false)
+        return NULL;
+
+    for (int i=0; i<size; i++)
+        Insert(set, (void*)(*(values+i)), CompareSet);
+    return set;
+}
+
+bool CompareSet(const Node* const member, const void* const data)
+{
+    if ((Set*)member->data == (Set*)data)
+        return true;
+    else
+        return false;
+}
+
+void PrintSet(const Set* const set, char label)
+{
+    printf("Set%c size: %d\n", label, Size(set));
+
+    printf("Set%c:\n", label);
+    Node *member = set->head;
+    while (member != NULL)
+    {
+        Set *data = (Set*)member->data;
+        Node *setMember = data->head;
+        while (setMember != NULL)
+        {
+            printf("%d ", *(int *)setMember->data);
+            setMember = setMember->next;
+        }
         
-//         while (node != NULL)
-//         {
-//             Set *setI;
-//             if (Initialize(&setI, DeleteNode) == -1)
-//                 return NULL;
+        member = member->next;
+        printf("\n");
+    }
+}
 
-//             Intersection(member, node->data, setI, CompareIntegers);
-//             if (largestSetSize < Size(setI))
-//             {
-//                 largestSetSize = Size(setI);
-//                 largestSet = node->data;
-//             }
-
-//             node = node->next;
-//         }
-
-//         Set *removeSet = NULL;
-//         CreateNode(covering, (void*)largestSet);
-
-//         Node *remove = largestSet->head;
-//         while (remove != NULL)
-//         {
-//             Node *removeNode = NULL;
-//             if ((removeNode = (Node*)malloc(sizeof(Node))) == NULL)
-//                 return NULL;
-
-//             Remove(member, (void*)remove->data, (void*)&removeNode, CompareIntegers);
-//             remove = remove->next;
-//             free(removeNode);
-//         }
-        
-//         Remove(subsets, (void*)largestSet, (void*)&removeSet, CompareSets);
-//     }
-
-//     if (Size(member) > 0)
-//         return NULL;
-
-//     return covering;
-// }
+void DeleteSet(void *data)
+{
+    printf("Deleting set data....\n");
+    free((Set*)data);
+    data = NULL;
+}

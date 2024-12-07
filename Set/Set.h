@@ -17,4 +17,7 @@ bool Difference(const Set* const setA, const Set* const setB, Set **setD, bool(*
 bool IsSubSet(const Set* const setA, const Set* const setB, bool(*Compare)(const Node* const member, const void* const data));
 bool IsEqual(const Set* const setA, const Set* const setB, bool(*Compare)(const Node* const member, const void* const data));
 
+// Algorithm Definition
+bool Cover(Set* const memberSet, Set* const subsets, Set** cover);
+
 #endif

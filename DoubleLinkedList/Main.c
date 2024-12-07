@@ -6,12 +6,12 @@
 int* CreateElement(int data);
 void Print(const DoubleLinkedList* const doubleLinkedList);
 bool Compare(const Node* const member, const void* const data);
-void DeleteInteger(void *data);
+void Delete(void *data);
 
 int main(void)
 {
 	DoubleLinkedList *doubleLinkedList;
-	if (Initialize(&doubleLinkedList, DeleteInteger) == false)
+	if (Initialize(&doubleLinkedList, Compare, Delete) == false)
         return -1;
 
 	int *value = CreateElement(1);
@@ -22,7 +22,7 @@ int main(void)
 		return -1;
 
 	Node *member;
-	if ((member = GetNode(doubleLinkedList, value, Compare)) == NULL)
+	if ((member = GetNode(doubleLinkedList, value)) == NULL)
 		return -1;
 	
 	value = CreateElement(2);
@@ -39,7 +39,7 @@ int main(void)
 	if (InsertAtEnd(doubleLinkedList, (void*)value) == false)
 		return -1;
 
-	if ((member = GetNode(doubleLinkedList, value, Compare)) == NULL)
+	if ((member = GetNode(doubleLinkedList, value)) == NULL)
 		return -1;
 	
 	value = CreateElement(3);
@@ -52,14 +52,14 @@ int main(void)
 	Print(doubleLinkedList);
 
 	int *removed = CreateElement(3);
-	if ((member = GetNode(doubleLinkedList, removed, Compare)) == NULL)
+	if ((member = GetNode(doubleLinkedList, removed)) == NULL)
 		return -1;
 	
 	if (RemoveAfter(doubleLinkedList, member, (void*)&removed) == true)
 		printf("Removed after: %d\n", *removed);
 
 	removed = CreateElement(3);
-	if ((member = GetNode(doubleLinkedList, removed, Compare)) == NULL)
+	if ((member = GetNode(doubleLinkedList, removed)) == NULL)
 		return -1;
 	
 	if (RemoveBefore(doubleLinkedList, member, (void*)&removed) == true)
@@ -113,7 +113,7 @@ bool Compare(const Node* const member, const void* const data)
 	return false;
 }
 
-void DeleteInteger(void *data)
+void Delete(void *data)
 {
 	printf("Deleting... %d\n", *(int *)data);
 	free((int*)data);
