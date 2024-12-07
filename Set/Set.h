@@ -4,34 +4,17 @@
 #include <stdbool.h>
 #include "../DoubleLinkedList/DoubleLinkedList.h"
 
-// // Struct Definition
-// typedef struct Node {
-//     void *data;
-//     struct Node *next;
-// } Node;
-
-// typedef struct Set {
-//     size_t size;
-//     Node *head;
-//     Node *tail;
-
-//     void(*Delete)(Node *data);
-// } Set;
-
+// Struct Definition
 typedef DoubleLinkedList Set;
 
 // Function Definition
-// bool Initialize(Set** set, void(*Delete)(void *data));
-// int IsMember(const Set* const set, const void* const data, int(*Compare)(const Node* const node, const void* const data));
-// int CreateNode(Set* const set, void *data);
-// int Insert(Set* const set, void *data, int(*Compare)(const Node* const node, const void* const data));
-// int Remove(Set* const set, const void* const remove, void **data, int(*Compare)(const Node* const node, const void* const data));
-// Set* Union(const Set* const setA, const Set* const setB, Set *set, int(*Compare)(const Node* const node, const void* const data));
-// Set* Intersection(const Set* const setA, const Set* const setB, Set *set, int(*Compare)(const Node* const node, const void* const data));
-// Set* Difference(const Set* const setA, const Set* const setB, Set *set, int(*Compare)(const Node* const node, const void* const data));
-// int IsSubSet(const Set* const setA, const Set* const setB, int(*Compare)(const Node* const node, const void* const data));
-// int IsEqual(const Set* const setA, const Set* const setB, int(*Compare)(const Node* const node, const void* const data));
-// int Size(const Set* const set);
-// int Destroy(Set* const set, int(*Compare)(const Node* const node, const void* const data), void(*Delete)(void *data));
+bool IsMember(const Set* const set, const void* const data, bool(*Compare)(const Node* const member, const void* const data));
+bool Insert(Set* const set, void *data, bool(*Compare)(const Node* const member, const void* const data));
+bool Remove(Set* const set, void **data, bool(*Compare)(const Node* const member, const void* const data));
+bool Union(const Set* const setA, const Set* const setB, Set **setU, bool(*Compare)(const Node* const member, const void* const data), void(*Delete)(void *data));
+bool Intersection(const Set* const setA, const Set* const setB, Set **setI, bool(*Compare)(const Node* const member, const void* const data), void(*Delete)(void *data));
+bool Difference(const Set* const setA, const Set* const setB, Set **setD, bool(*Compare)(const Node* const member, const void* const data), void(*Delete)(void *data));
+bool IsSubSet(const Set* const setA, const Set* const setB, bool(*Compare)(const Node* const member, const void* const data));
+bool IsEqual(const Set* const setA, const Set* const setB, bool(*Compare)(const Node* const member, const void* const data));
 
 #endif

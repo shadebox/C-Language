@@ -3,14 +3,15 @@
 #include "Set.h"
 
 // Function Definition
+int IntegerSetTest();
 Set* InitializeIntegerValue(int values[], int size);
-// Set* InitializeSetValue(Set* values[], int size);
-// int* CreateIntegerElement(int data);
-// int CompareIntegers(const Node* const node, const void* const data);
-// int CompareSets(const Node* const node, const void* const data);
-// void DeleteNode(Node *data);
+int* CreateIntegerElement(int data);
+bool CompareInteger(const Node* const member, const void* const data);
+void PrintInteger(const Set* const set, char label);
 void DeleteInteger(void *data);
-void PrintIntegers(const Set* const set);
+// void DeleteNode(Node *data);
+// Set* InitializeSetValue(Set* values[], int size);
+// int CompareSets(const Node* const node, const void* const data);
 // void PrintSet(const void* const data);
 
 // Algorithm Definition
@@ -18,70 +19,8 @@ void PrintIntegers(const Set* const set);
 
 int main(void)
 {
-    Set *setA, *setB, *setU, *setI, *setD;
-
-    int valueSetA[] = { 1, 2, 1, 3 };
-    setA = InitializeIntegerValue(valueSetA, 4);
-    PrintIntegers(setA);
-
-    /*printf("SetA size: %d\nSetA: ", Size(setA));
-    PrintIntegers(setA);
-
-    int *remove = NULL;
-    if ((remove = (int*)malloc(sizeof(int))) == NULL)
+    if (IntegerSetTest() == -1)
         return -1;
-
-    Remove(setA, (void*)(valueSetA + 3), (void*)&remove, CompareIntegers);
-
-    printf("SetA size after removing: %d\nSetA: ", Size(setA));
-    PrintIntegers(setA);
-
-    int valueSetB[] = { 1, 3 };
-    setB = InitializeIntegerValue(valueSetB, 2);
-
-    printf("SetB size: %d\nSetB: ", Size(setB));
-    PrintIntegers(setB);
-
-    if (Initialize(&setU, DeleteNode) == -1)
-        return -1;
-
-    if (Union(setA, setB, setU, CompareIntegers) == NULL)
-        return -1;
-    printf("SetU size: %d\nSetU: ", Size(setU));
-    PrintIntegers(setU);
-
-    if (IsSubSet(setA, setU, CompareIntegers) == 1)
-        printf("SetA is subset of SetU\n");
-    else
-        printf("SetA is not subset of SetU\n");
-
-    if (Initialize(&setI, DeleteNode) == -1)
-        return -1;
-
-    if (Intersection(setA, setB, setI, CompareIntegers) == NULL)
-        return -1;
-    printf("SetI size: %d\nSetI: ", Size(setI));
-    PrintIntegers(setI);
-
-    if (IsEqual(setA, setB, CompareIntegers) == 1)
-        printf("SetA and SetB are equal\n");
-    else
-        printf("SetA and SetB is not equal\n");
-
-    if (Initialize(&setD, DeleteNode) == -1)
-        return -1;
-
-    if (Difference(setA, setB, setD, CompareIntegers) == NULL)
-        return -1;
-    printf("SetD size: %d\nSetD: ", Size(setD));
-    PrintIntegers(setD);
-
-	if (Destroy(setD, CompareIntegers, DeleteInteger) == -1)
-		return -1;
-	else
-		setD == NULL;
-
-	printf("Set destroyed\n");*/
 
     /*printf("\nCovering Algorithm\n");
     Set *members, *subsets, *covering;
@@ -126,21 +65,116 @@ int main(void)
     return 0;
 }
 
+int IntegerSetTest()
+{
+    Set *setA, *setB, *setU, *setI, *setD;
+
+    int valueSetA[] = { 1, 2, 1, 3 };
+    setA = InitializeIntegerValue(valueSetA, 4);
+    PrintInteger(setA, 'A');
+
+    int valueSetB[] = { 1, 3 };
+    setB = InitializeIntegerValue(valueSetB, 2);
+    PrintInteger(setB, 'B');
+
+    int *removed = NULL;
+    if ((removed = (int*)malloc(sizeof(int))) == NULL)
+        return -1;
+    
+    *removed = valueSetA[3];
+    if (Remove(setA, (void*)&removed, CompareInteger) == false)
+        return -1;
+
+    printf("Removed value: %d\n", *removed);
+    PrintInteger(setA, 'A');
+
+    if (Union(setA, setB, &setU, CompareInteger, DeleteInteger) == false)
+        return -1;
+
+    PrintInteger(setU, 'U');
+
+    if (IsSubSet(setA, setU, CompareInteger) == true)
+        printf("SetA is subset of SetU\n");
+    else
+        printf("SetA is not subset of SetU\n");
+
+    if (Intersection(setA, setB, &setI, CompareInteger, DeleteInteger) == false)
+        return -1;
+
+    PrintInteger(setI, 'I');
+
+    if (IsEqual(setA, setB, CompareInteger) == true)
+        printf("SetA and SetB are equal\n");
+    else
+        printf("SetA and SetB are not equal\n");
+
+    if (Difference(setA, setB, &setD, CompareInteger, DeleteInteger) == false)
+        return -1;
+
+    PrintInteger(setD, 'D');
+
+    if (Destroy(&setD) == false)
+		return -1;
+
+	printf("Set destroyed\n");
+    return 0;
+}
+
 Set* InitializeIntegerValue(int values[], int size)
 {
     Set *set;
     if (Initialize(&set, DeleteInteger) == false)
         return NULL;
 
-    // int *value = NULL;
-    // for (int i=0; i<size; i++)
-    // {
-    //     if ((value = CreateIntegerElement(values[i])) == NULL)
-    //         return NULL;
-    //     Insert(set, (void*)value, CompareIntegers);
-    // }
+    int *value = NULL;
+    for (int i=0; i<size; i++)
+    {
+        if ((value = CreateIntegerElement(values[i])) == NULL)
+            return NULL;
+        Insert(set, (void*)value, CompareInteger);
+    }
 
     return set;
+}
+
+int* CreateIntegerElement(int data)
+{
+    int *value = NULL;
+    if ((value = (int*)malloc(sizeof(int))) == NULL)
+        return NULL;
+    *value = data;
+
+    return value;
+}
+
+bool CompareInteger(const Node* const member, const void* const data)
+{
+    if (*(int*)member->data == *(int*)data)
+        return true;
+    else
+        return false;
+}
+
+void PrintInteger(const Set* const set, char label)
+{
+    printf("Set%c size: %d\n", label, Size(set));
+
+    printf("Set%c: ", label);
+    Node *member = set->head;
+    while (member != NULL)
+    {
+        printf("%d ", *(int *)member->data);
+        member = member->next;
+    }
+
+    printf("\n");
+}
+
+void DeleteInteger(void *data)
+{
+    printf("Deleting... %d\n", *(int *)data);
+    free(data);
+    data = NULL;
 }
 
 // Set* InitializeSetValue(Set* values[], int size)
@@ -152,26 +186,6 @@ Set* InitializeIntegerValue(int values[], int size)
 //     for (int i=0; i<size; i++)
 //         Insert(set, (void*)(*(values+i)), CompareSets);
 //     return set;
-// }
-
-// int* CreateIntegerElement(int data)
-// {
-//     int *value = NULL;
-//     if ((value = (int*)malloc(sizeof(int))) == NULL)
-//         return NULL;
-//     *value = data;
-
-//     return value;
-// }
-
-// int CompareIntegers(const Node* const node, const void* const data)
-// {
-//     int n = *(int*)node->data;
-//     int d = *(int*)data;
-//     if (*(int*)node->data == *(int*)data)
-//         return 1;
-//     else
-//         return 0;
 // }
 
 // int CompareSets(const Node* const node, const void* const data)
@@ -186,28 +200,6 @@ Set* InitializeIntegerValue(int values[], int size)
 // {
 //     free(data);
 // }
-
-void DeleteInteger(void *data)
-{
-    printf("Deleting... %d\n", *(int *)data);
-    free(data);
-    data = NULL;
-}
-
-void PrintIntegers(const Set* const set)
-{
-    printf("Set size: %d\n", Size(set));
-
-    printf("List: ");
-    Node *member = set->head;
-    while (member != NULL)
-    {
-        printf("%d ", *(int *)member->data);
-        member = member->next;
-    }
-
-    printf("\n");
-}
 
 // void PrintSet(const void* const data)
 // {
