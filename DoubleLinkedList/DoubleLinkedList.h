@@ -20,7 +20,7 @@ typedef struct DoubleLinkedList {
 } DoubleLinkedList;
 
 // Function Definition
-bool Initialize(DoubleLinkedList**, void(*Delete)(void *data));
+bool Initialize(DoubleLinkedList** doubleLinkedList, void(*Delete)(void *data));
 bool InsertAtFront(DoubleLinkedList* const doubleLinkedList, const void* const data);
 bool InsertAtEnd(DoubleLinkedList* const doubleLinkedList, const void* const data);
 bool InsertBefore(DoubleLinkedList* const doubleLinkedList, Node* const item, const void* const data);
