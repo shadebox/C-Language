@@ -18,8 +18,8 @@ void DeleteSet(void *data);
 
 int main(void)
 {
-    // if (IntegerSetTest() == -1)
-    //     return -1;
+    if (IntegerSetTest() == -1)
+        return -1;
 
     if (CoveringSetTest() == -1)
         return -1;
@@ -44,7 +44,7 @@ int IntegerSetTest()
         return -1;
     
     *removed = valueSetA[3];
-    if (Remove(setA, (void*)&removed, CompareInteger) == false)
+    if (Remove(setA, (void*)&removed) == false)
         return -1;
 
     printf("Removed value: %d\n", *removed);
@@ -55,7 +55,7 @@ int IntegerSetTest()
 
     PrintInteger(setU, 'U');
 
-    if (IsSubSet(setA, setU, CompareInteger) == true)
+    if (IsSubSet(setA, setU) == true)
         printf("SetA is subset of SetU\n");
     else
         printf("SetA is not subset of SetU\n");
@@ -65,7 +65,7 @@ int IntegerSetTest()
 
     PrintInteger(setI, 'I');
 
-    if (IsEqual(setA, setB, CompareInteger) == true)
+    if (IsEqual(setA, setB) == true)
         printf("SetA and SetB are equal\n");
     else
         printf("SetA and SetB are not equal\n");
@@ -85,7 +85,7 @@ int IntegerSetTest()
 Set* InitializeIntegerValue(int values[], int size)
 {
     Set *set;
-    if (Initialize(&set, DeleteInteger) == false)
+    if (Initialize(&set, CompareInteger, DeleteInteger) == false)
         return NULL;
 
     int *value = NULL;
@@ -93,7 +93,7 @@ Set* InitializeIntegerValue(int values[], int size)
     {
         if ((value = CreateIntegerElement(values[i])) == NULL)
             return NULL;
-        Insert(set, (void*)value, CompareInteger);
+        Insert(set, (void*)value);
     }
 
     return set;
@@ -168,12 +168,16 @@ int CoveringSetTest()
 
     PrintSet(subsets, 'S');
 
-    printf("\nCovering started\n");
+    printf("\nLooking for Covering\n");
+
+    Initialize(&covering, CompareSet, DeleteSet);
     if (Cover(members, subsets, &covering) == false)
+    {
+        printf("Covering not found.\n");
         return -1;
+    }
 
     PrintSet(covering, 'C');
-    printf("Covering ended.\n");
 
     return 0;
 }
@@ -181,11 +185,11 @@ int CoveringSetTest()
 Set* InitializeSetValue(Set* values[], int size)
 {
     Set *set;
-    if (Initialize(&set, DeleteSet) == false)
+    if (Initialize(&set, CompareSet, DeleteSet) == false)
         return NULL;
 
     for (int i=0; i<size; i++)
-        Insert(set, (void*)(*(values+i)), CompareSet);
+        Insert(set, (void*)(*(values+i)));
     return set;
 }
 
