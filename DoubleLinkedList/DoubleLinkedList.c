@@ -150,7 +150,9 @@ bool RemoveAtFront(DoubleLinkedList* const doubleLinkedList, void** data)
 	Node *member = doubleLinkedList->head;
 	*data = (void*)member->data;
 	doubleLinkedList->head = member->next;
-	doubleLinkedList->head->previous = NULL;
+
+	if (doubleLinkedList->head != NULL)
+		doubleLinkedList->head->previous = NULL;
 	doubleLinkedList->size--;
 
 	if (Size(doubleLinkedList) == 0)
