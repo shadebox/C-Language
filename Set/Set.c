@@ -158,10 +158,10 @@ bool Cover(Set* const memberSet, Set* const subsets, Set** cover)
             member = member->next;
         }
 
-        Insert(*cover, largestSet);
-
         if (largestSetSize == 0)
             return false;
+
+        Insert(*cover, largestSet);
 
         Node *removeNode = largestSet->head;
         while (removeNode != NULL)
@@ -173,7 +173,7 @@ bool Cover(Set* const memberSet, Set* const subsets, Set** cover)
         Remove(subsets, (void*)&largestSet);
     }
 
-    if (Size(memberSet) != 0 || Size(subsets) == 0)
+    if (Size(memberSet) != 0)
         return false;
 
     return true;
