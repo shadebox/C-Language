@@ -5,14 +5,14 @@
 // Function Definition
 
 // O(n)
-int InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets, int(*chainedHash)(const void* const key), int(*match)(const void* const keyA, const void* const keyB), void(*destroy)(void *data))
+bool InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets, bool(*ChainedHash)(const void* const key), bool(*Compare)(const void* const keyA, const void* const keyB), void(*Destroy)(void *data))
 {
     if ((*chainedHashTable = (ChainedHashTable*)malloc(sizeof(ChainedHashTable))) == NULL)
         return -1;
 
-    (*chainedHashTable)->chainedHash = chainedHash;
-    (*chainedHashTable)->match = match;
-    (*chainedHashTable)->destroy = destroy;
+    (*chainedHashTable)->ChainedHash = ChainedHash;
+    (*chainedHashTable)->Compare = Compare;
+    (*chainedHashTable)->Destroy = Destroy;
 
     for (int i=0; i<buckets; i++)
     {
@@ -23,13 +23,13 @@ int InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets,
 }
 
 // O(1)
-int Insert(ChainedHashTable* const chainedHashTable, const void* const data)
+bool Insert(ChainedHashTable* const chainedHashTable, const void* const data)
 {
     return -1;
 }
 
 // O(1)
-int Remove(ChainedHashTable* const chainedHashTable, void **data)
+bool Remove(ChainedHashTable* const chainedHashTable, void **data)
 {
     return -1;
 }
@@ -41,7 +41,7 @@ int Size(const ChainedHashTable* const chainedHashTable)
 }
 
 // O(n)
-int Destroy(ChainedHashTable **chainedHashTable)
+bool Destroy(ChainedHashTable **chainedHashTable)
 {
     free(chainedHashTable);
     chainedHashTable = NULL;
