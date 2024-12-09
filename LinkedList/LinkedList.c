@@ -90,7 +90,6 @@ bool InsertAfter(LinkedList* const linkedList, Node* const item, const void* con
 	member->next = NULL;
     if (item == NULL)
 	{
-		perror("Error message");
 		return false;
 	}
 	else
@@ -108,7 +107,6 @@ bool RemoveAtFront(LinkedList* const linkedList, void **data)
 {
 	if (Size(linkedList) == 0)
 	{
-		perror("Error message");
 		return false;
 	}
 	else
@@ -129,7 +127,6 @@ bool RemoveAtEnd(LinkedList* const linkedList, void **data)
 	Node *member = linkedList->head;
 	if (Size(linkedList) == 0)
 	{
-		perror("Error message");
 		return false;
 	}
 	else if (member->next == NULL)
@@ -158,10 +155,7 @@ bool RemoveAtEnd(LinkedList* const linkedList, void **data)
 bool RemoveAfter(LinkedList* const linkedList, Node* const item, void **data)
 {
 	if (Size(linkedList) == 0)
-	{
-		perror("Error message");
 		return false;
-	}
 
 	Node *member = NULL;
 	if (item == NULL)
