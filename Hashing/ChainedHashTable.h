@@ -11,22 +11,19 @@
 typedef struct ChainedHashTable {
     int buckets;
     int size;
-    LinkedList table;
+    LinkedList *table;
 
-    int(*ChainedHash)(const void* const key);
+    unsigned(*HashFunction)(const void* const key);
     bool(*Compare)(const void* const keyA, const void* const keyB);
-    void(*Destroy)(void *data);
+    void(*Delete)(void *data);
 
 } ChainedHashTable;
 
 // Function Definition
-bool InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets, bool(*ChainedHash)(const void* const key), bool(*Compare)(const void* const keyA, const void* const keyB), void(*Destroy)(void *data));
+bool InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets, unsigned(*HashFunction)(const void* const key), bool(*Compare)(const void* const keyA, const void* const keyB), void(*Delete)(void *data));
 bool Insert(ChainedHashTable* const chainedHashTable, const void* const data);
 bool Remove(ChainedHashTable* const chainedHashTable, void **data);
-int Size(const ChainedHashTable* const chainedHashTable);
-bool Destroy(ChainedHashTable **chainedHashTable);
-
-// Algorithm Definition
-unsigned HashFunction(const void *key);
+int ChainedHashTableSize(const ChainedHashTable* const chainedHashTable);
+bool DestroyChainedHashTable(ChainedHashTable **chainedHashTable);
 
 #endif

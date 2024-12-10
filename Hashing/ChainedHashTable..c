@@ -1,25 +1,41 @@
 #include <stdlib.h>
+#include <errno.h>
 #include "ChainedHashTable.h"
 #include "../LinkedList/LinkedList.h"
 
 // Function Definition
 
 // O(n)
-bool InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets, bool(*ChainedHash)(const void* const key), bool(*Compare)(const void* const keyA, const void* const keyB), void(*Destroy)(void *data))
+bool InitializeChainedHashTable(ChainedHashTable **chainedHashTable, int buckets, unsigned(*HashFunction)(const void* const key), bool(*Compare)(const void* const keyA, const void* const keyB), void(*Delete)(void *data))
 {
     if ((*chainedHashTable = (ChainedHashTable*)malloc(sizeof(ChainedHashTable))) == NULL)
-        return -1;
-
-    (*chainedHashTable)->ChainedHash = ChainedHash;
-    (*chainedHashTable)->Compare = Compare;
-    (*chainedHashTable)->Destroy = Destroy;
-
-    for (int i=0; i<buckets; i++)
     {
-        // initialize all the linked list buckets
+        perror("Error message");
+        return false;
     }
 
-    return 1;
+    if (((*chainedHashTable)->table = (LinkedList*)malloc(buckets * sizeof(LinkedList))) == NULL)
+    {
+        perror("Error message");
+        return false;
+    }
+
+    (*chainedHashTable)->buckets = buckets;
+    (*chainedHashTable)->size = 0;
+
+    for (int i = 0; i < buckets; i++)
+    {
+        if (Initialize(&(*chainedHashTable)->table+i, NULL, Delete) == false)
+            return false;
+
+        (*chainedHashTable)->size++;
+    }
+
+    (*chainedHashTable)->HashFunction = HashFunction;
+    (*chainedHashTable)->Compare = Compare;
+    (*chainedHashTable)->Delete = Delete;
+
+    return true;
 }
 
 // O(1)
@@ -35,40 +51,34 @@ bool Remove(ChainedHashTable* const chainedHashTable, void **data)
 }
 
 // O(1)
-int Size(const ChainedHashTable* const chainedHashTable)
+int ChainedHashTableSize(const ChainedHashTable* const chainedHashTable)
 {
-    return -1;
+    return chainedHashTable->size;
 }
 
 // O(n)
-bool Destroy(ChainedHashTable **chainedHashTable)
+bool DestroyChainedHashTable(ChainedHashTable **chainedHashTable)
 {
-    free(chainedHashTable);
-    chainedHashTable = NULL;
-
-    return 1;
-}
-
-// Hash Algorithm
-unsigned HashFunction(const void *key)
-{
-    const char *localKey = key;
-    unsigned int value = 0;;
-
-    while (*localKey != '\0')
+	LinkedList *remove;
+    while ((*chainedHashTable)->size > 0)
     {
-        unsigned int temp;
+        if ((remove = malloc(sizeof(void))) == NULL)
+		{
+			perror("Error message");
+			return false;
+		}
 
-        value = (value << 4) + (*localKey);
-
-        if (temp = (value & 0xf0000000))
-        {
-            value = value ^ (temp >> 24);
-            value = value ^ temp;
-        }
-
-        localKey++;
+		if (RemoveAfter((*chainedHashTable)->table, NULL, (void*)&remove) == true)
+            Destroy(&remove);
+			
+        (*chainedHashTable)->size--;
     }
+    
+    free((*chainedHashTable)->table);
+    (*chainedHashTable)->table = NULL;
 
-    return value % PRIME_TABLE_SIZE;
+    free(*chainedHashTable);
+    *chainedHashTable = NULL;
+
+    return true;
 }
