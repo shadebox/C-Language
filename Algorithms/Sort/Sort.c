@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "Sort.h"
+#include "../../Debug.h"
 
 void BubbleSort(int* array, size_t size)
 {
@@ -14,5 +15,6 @@ void BubbleSort(int* array, size_t size)
                 array[j + 1] = temp;
             }
         }
+        Print(array, 10);
     }
 }

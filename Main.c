@@ -1,8 +1,6 @@
 #include <stdio.h>
+#include "Debug.h"
 #include "Algorithms/Sort/Sort.h"
-
-/* Function Prototypes */
-void Print(const int* const array, size_t size);
 
 int main(void)
 {
@@ -13,13 +11,4 @@ int main(void)
 	Print(array, 10);
 
 	return 0;
-}
-
-/* Helper Functions For Printing Arrays */
-void Print(const int* const array, size_t size)
-{
-	printf("Array: ");
-	for (size_t i = 0; i < size; i ++)
-		printf("%d ", array[i]);
-	printf("\n");
 }
