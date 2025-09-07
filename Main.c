@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Debug.h"
+#include "HelperFunction.h"
 #include "Algorithms/Sort/Sort.h"
 
 int main(void)

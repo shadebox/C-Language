@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "Sort.h"
-#include "../../Debug.h"
+#include "../../HelperFunction.h"
 
 void BubbleSort(int* array, size_t size)
 {
@@ -12,14 +12,7 @@ void BubbleSort(int* array, size_t size)
         {
             if (array[j] > array[j + 1])
             {
-                // array[j] = array[j] + array[j + 1];             // 4 + 5 = 9
-                // array[j + 1] = array[j] - array[j + 1];         // 9 - 5 = 4
-                // array[j] = array[j] - array[j + 1];             // 9 - 4 = 5
-
-                array[j] = array[j] ^ array[j + 1];                 // (original a) ^ (original b)
-                array[j + 1] = array[j] ^ array[j + 1];             // ((original a) ^ (original b)) ^ (original b) = (original a)
-                array[j] = array[j] ^ array[j + 1];                 // ((original a) ^ (original b)) ^ (original a) = (original b)
-
+                Swap(&array[j], &array[j + 1]);
                 didSwap = true;
             }
         }
@@ -28,4 +21,10 @@ void BubbleSort(int* array, size_t size)
             break;
         Print(array, 10);
     }
+}
+
+
+void SelectionSort(int* array, size_t size)
+{
+
 }
