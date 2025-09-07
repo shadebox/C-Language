@@ -8,7 +8,6 @@ int main(void)
 
 	Print(array, 10);
 	BubbleSort(array, 10);
-	Print(array, 10);
 
 	return 0;
 }
