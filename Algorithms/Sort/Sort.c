@@ -19,12 +19,24 @@ void BubbleSort(int* array, size_t size)
 
         if (!didSwap)
             break;
-        Print(array, 10);
+        Print(array, size);
     }
 }
 
 
 void SelectionSort(int* array, size_t size)
 {
+    for (size_t i = 0; i < size; i++)
+    {
+        size_t minIndex = i;
+        for (size_t j = i + 1; j < size; j++)
+        {
+            if (array[minIndex] > array[j])
+                minIndex = j;
+        }
 
+        if (i != minIndex)
+            Swap(&array[i], &array[minIndex]);
+        Print(array, size);
+    }
 }
