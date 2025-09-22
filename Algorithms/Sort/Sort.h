@@ -4,4 +4,5 @@
 // Function Definitions
 void BubbleSort(int* array, size_t size);
 void SelectionSort(int* array, size_t size);
+void InsertionSort(int* array, int size);
 #endif
