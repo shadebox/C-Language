@@ -4,5 +4,10 @@
 // Function Definitions
 void BubbleSort(int* array, size_t size);
 void SelectionSort(int* array, size_t size);
-void InsertionSort(int* array, int size);
+void InsertionSort(int* array, size_t size);
+void MergeSort(int array[], int start, int end);
+
+// Helper Function Definitions
+void Merge(int array[], int start, int mid, int end);
+
 #endif

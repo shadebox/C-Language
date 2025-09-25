@@ -41,7 +41,7 @@ void SelectionSort(int* array, size_t size)
     }
 }
 
-void InsertionSort(int* array, int size)
+void InsertionSort(int* array, size_t size)
 {
     for (int i = 1; i < size; i++)
     {
@@ -56,5 +56,70 @@ void InsertionSort(int* array, int size)
 
         array[j + 1] = key;
         Print(array, size);
+    }
+}
+
+
+void MergeSort(int array[], int start, int end)
+{
+    // Base Case
+    if (start >= end)
+        return;
+
+    // Divide the array into two halves
+    int mid = (start + end) / 2;
+
+    MergeSort(array, start, mid);
+    MergeSort(array, mid + 1, end);
+
+    // Conquer the two halves
+    Merge(array, start, mid, end);
+}
+
+void Merge(int array[], int start, int mid, int end)
+{
+    int n1 = mid - start + 1; // Size of left array
+    int n2 = end - mid;       // Size of right array
+
+    // Store the two halves in temporary arrays
+    int left[n1], right[n2];
+
+    for (int i = 0; i < n1; i++)
+        left[i] = array[start + i];
+
+    // We want mid + 1 because mid is part of the left array
+    for (int i = 0; i < n2; i++)
+        right[i] = array[ mid + 1 + i];
+
+    // Merge the two halves back into the original array
+    int i = 0, j = 0, k = start;
+    while (i < n1 && j < n2)
+    {
+        if (left[i] < right[j])
+        {
+            array[k] = left[i];
+            i++;
+        }
+        else
+        {
+            array[k] = right[j];
+            j++;
+        }
+
+        k++;
+    }
+    
+     while (i < n1)
+    {
+        array[k] = left[i];
+        i++;
+        k++;
+    }
+        
+    while (j < n2)
+    {
+        array[k] = right[j];
+        j++;
+        k++;
     }
 }
