@@ -12,9 +12,19 @@ void Print(const int* const array, size_t size)
 
 void Swap(int* a, int* b)
 {
-	*a = *a + *b;		// 4 + 5 = 9
-	*b = *a - *b;		// 9 - 5 = 4
-	*a = *a - *b;		// 9 - 4 = 5
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+
+	// These all have a flaw of some kind, 
+	// if the values are too large or the 
+	// same memory address is supplied for 
+	// both parameters then it will not work correctly.
+	// These are for educational purposes only.
+	
+	// *a = *a + *b;		// 4 + 5 = 9
+	// *b = *a - *b;		// 9 - 5 = 4
+	// *a = *a - *b;		// 9 - 4 = 5
 
 	// *a = *a ^ *b;		// (original a) ^ (original b)
 	// *b = *a ^ *b;		// ((original a) ^ (original b)) ^ (original b) = (original a)

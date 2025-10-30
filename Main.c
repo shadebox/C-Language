@@ -8,7 +8,9 @@ int main(void)
 	int len = sizeof(array) / sizeof(array[0]);
 
 	Print(array, len);
-	MergeSort(array, 0, len);
+
+	// QuickSort(array, 0, len - 1);
+	// MergeSort(array, 0, len);
 	// InsertionSort(array, len);
 	// SelectionSort(array, len);
 	// BubbleSort(array, len);

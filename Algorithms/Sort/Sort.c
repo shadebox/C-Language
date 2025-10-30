@@ -23,7 +23,6 @@ void BubbleSort(int* array, size_t size)
     }
 }
 
-
 void SelectionSort(int* array, size_t size)
 {
     for (size_t i = 0; i < size; i++)
@@ -59,7 +58,6 @@ void InsertionSort(int* array, size_t size)
     }
 }
 
-
 void MergeSort(int array[], int start, int end)
 {
     // Base Case
@@ -76,6 +74,21 @@ void MergeSort(int array[], int start, int end)
     Merge(array, start, mid, end);
 }
 
+void QuickSort(int array[], int start, int end)
+{
+    // Base Case
+    if (start >= end)
+        return;
+    
+    // Choosing the first element as pivot
+    int pivotIndex = Pivot(array, start, end);
+
+    // Call QuickSort again on subarrays
+    QuickSort(array, start, pivotIndex - 1);
+    QuickSort(array, pivotIndex + 1, end); 
+}
+
+// MergeSort Helper Function
 void Merge(int array[], int start, int mid, int end)
 {
     int n1 = mid - start + 1; // Size of left array
@@ -122,4 +135,26 @@ void Merge(int array[], int start, int mid, int end)
         j++;
         k++;
     }
+}
+
+int Pivot(int array[], int start, int end)
+{
+    int pivotValue = array[end];
+
+    // These will track the index for swapping
+    int i = start - 1;
+
+    for (int j = start; j <= end; j++)
+    {
+        if (array[j] < pivotValue)
+        {
+            i = i + 1;
+            Swap(&array[i], &array[j]);
+        }
+    }
+    
+    i = i + 1;
+    Swap(&array[i], &array[end]);
+
+    return i;
 }
