@@ -14,6 +14,7 @@ int main(void)
 	// InsertionSort(array, len);
 	// SelectionSort(array, len);
 	// BubbleSort(array, len);
+	HeapSort(array, len - 1);
 
 	Print(array, len);
 

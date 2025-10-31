@@ -137,6 +137,7 @@ void Merge(int array[], int start, int mid, int end)
     }
 }
 
+// QuickSort Helper Function
 int Pivot(int array[], int start, int end)
 {
     int pivotValue = array[end];
@@ -157,4 +158,19 @@ int Pivot(int array[], int start, int end)
     Swap(&array[i], &array[end]);
 
     return i;
+}
+
+void HeapSort(int array[], size_t size)
+{
+    BuildMaxHeap(array, size);
+
+    for (int i = size; i > 0; i--)
+    {
+        int temp = array[0];
+		array[0] = array[i];
+		array[i] = temp;
+
+        size = size - 1;
+        MaxHeapify(array, 0, size);
+    }
 }
